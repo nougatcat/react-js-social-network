@@ -1,0 +1,21 @@
+.navigation {
+    grid-area: nav;
+    background-color: rgb(9, 20, 56);
+    padding: 20px;
+}
+
+.item{
+    color:white;
+}
+
+
+.active { 
+    color: gold;
+}
+
+a {
+    text-decoration: none;
+    cursor:pointer; 
+    /* для навлинков, у которых почему-то пропал поинтер */
+}
+

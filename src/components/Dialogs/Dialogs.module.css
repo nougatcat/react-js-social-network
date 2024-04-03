@@ -1,0 +1,20 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: 1fr 5fr; 
+    /* т.е. вторая колонка в 5 раз больше первойчто */
+}
+.dialogs__items {
+    padding: 10px;
+}
+.dialog {
+}
+
+.dialogs__items .active {
+    color: gold;
+}
+.messages__items {
+    padding: 10px;
+
+}
+.message {
+}
