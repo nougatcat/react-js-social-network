@@ -5,6 +5,11 @@ const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/', //будет добавляться в начало у всех инстансов
     //headers: { "API-KEY": "9952b53e-baae-4eb6-bf56-66454d" }
 })
+const instance2 = axios.create({
+    withCredentials: true,
+    baseURL: 'https://social-network.samuraijs.com/api/1.0/', //будет добавляться в начало у всех инстансов
+    headers: { "API-KEY": "9952b53e-baae-4eb6-bf56-66454d" }
+})
 
 export const usersAPI = {
     //для UsersContainer
@@ -26,10 +31,17 @@ export const usersAPI = {
     getProfileInfo(userId = 1) {
         return axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
             .then(response => response.data);
-    }
+    },
 
-    //для Users
-    //тут ничего нет, но можно написать
+    //для Users (не работает и не используется)
+    deleteSubscription(id = 1) {
+        instance2.delete(`follow/${id}`)
+            .then(response => response.data);
+    },
+    postSubscription(id = 1) {
+        instance2.post(`follow/${id}`)
+            .then(response => response.data);
+    }
 }
 
 
