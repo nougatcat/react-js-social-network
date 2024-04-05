@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Users.module.css';
 import userPhoto from '../../assets/images/user.png';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
 let Users = (props) => {
 
@@ -24,15 +25,39 @@ let Users = (props) => {
                     <div key={user.id}>
                         <span>
                             <div>
-                                <NavLink to = { '/profile/'  + user.id }>
+                                <NavLink to={'/profile/' + user.id}>
                                     <img src={user.photos.small != null ? user.photos.small : userPhoto} className={styles.userPhoto} />
                                 </NavLink>
                             </div>
                             <div>
                                 {
-                                    user.followed ?
-                                        <button onClick={() => { props.unfollow(user.id) }}>Unfollow</button>
-                                        : <button onClick={() => { props.follow(user.id) }}>Follow</button>
+                                    user.followed
+                                        ? <button onClick={() => { 
+                                            axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {
+                                                withCredentials: true,
+                                                headers: {
+                                                    "API-KEY" : "9952b53e-baae-4eb6-bf56-66454d"
+                                                }
+                                            })
+                                            .then(response => {
+                                                if (response.data.resultCode == 0) { //код 0 - сервер не вернул ошибку
+                                                    props.unfollow(user.id)
+                                                }
+                                            });
+                                        }}>Unfollow</button>
+                                        : <button onClick={() => {
+                                            axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {}, {
+                                                withCredentials: true,
+                                                headers: {
+                                                    "API-KEY" : "9952b53e-baae-4eb6-bf56-66454d"
+                                                }
+                                            })
+                                            .then(response => {
+                                                if (response.data.resultCode == 0) {
+                                                    props.follow(user.id);
+                                                }
+                                            });
+                                        }}>Follow</button>
                                 }
                             </div>
                         </span>
