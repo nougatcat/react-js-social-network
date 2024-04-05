@@ -1,9 +1,8 @@
 import React from "react";
 import Header from "./Header";
-import axios from "axios";
 import { connect } from "react-redux";
 import { setAuthUserData } from "../../redux/auth-reducer";
-import { getMyProfileData } from "../../api/api";
+import { usersAPI } from "../../api/api";
 
 class HeaderContainer extends React.Component {
     // componentDidMount() {
@@ -19,7 +18,7 @@ class HeaderContainer extends React.Component {
     //         });
     // }
     componentDidMount() {
-        getMyProfileData()
+        usersAPI.getMyProfileData()
             .then(data =>{
                 if(data.resultCode === 0) {
                     let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием

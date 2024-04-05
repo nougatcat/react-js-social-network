@@ -1,27 +1,25 @@
 import React from "react";
 import Profile from "./Profile";
-import axios from "axios";
 import { connect } from "react-redux";
 import { setUserProfile } from '../../redux/profile-reducer';
 //import { withRouter } from 'react-router'; //withRouter не существует в новой версии роутера
 import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
+import { usersAPI } from "../../api/api";
 export const withRouter = (Component) => {
-    return(props) => {
-        const match = {params: useParams()};
+    return (props) => {
+        const match = { params: useParams() };
         return <Component match={match} {...props} />;
     };
 };
 
 
 class ProfileContainer extends React.Component {
-    componentDidMount() {
+    componentDidMount() { //покажет страницу profile/id
         let userId = this.props.match.params.userId;
-        if (!userId) userId=2;
-        // debugger;
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
-        .then(response => {
-            this.props.setUserProfile(response.data);
-        });
+        if (!userId) userId = 2; //для страницы /profile без id 
+        usersAPI.getProfileInfo(userId).then(data => {
+            this.props.setUserProfile(data);
+        })
     }
     render() {
         return (
@@ -35,6 +33,6 @@ let mapStateToProps = (state) => ({ //альт запись ретурна
 
 });
 
-let WithUrlDataContainerComponent =  withRouter(ProfileContainer); //для отслеживания адресной строки
+let WithUrlDataContainerComponent = withRouter(ProfileContainer); //для отслеживания адресной строки
 
-export default connect(mapStateToProps, {setUserProfile})(WithUrlDataContainerComponent);
+export default connect(mapStateToProps, { setUserProfile })(WithUrlDataContainerComponent);

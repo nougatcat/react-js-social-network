@@ -7,9 +7,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { follow, setCurrentPage, setTotalUsersCount, setUsers, toggleIsFetching, unfollow } from '../../redux/users-reducer';
 import Users from './Users';
-import axios from 'axios';
 import Preloader from '../common/Preloader/Preloader';
-import { getUsers } from '../../api/api';
+import { usersAPI } from '../../api/api';
 
 
 //Первая часть контейнерной компоненты - передача данных из редакса
@@ -36,7 +35,7 @@ class UsersContainer extends React.Component {
     componentDidMount() { //сработает сразу после первой отрисовки рендером
         this.props.toggleIsFetching(true); //помещаем прелоадер
         //берем юзеров с учебного сайта
-        getUsers(this.props.currentPage,this.props.pageSize).then(data => {
+        usersAPI.getUsers(this.props.currentPage,this.props.pageSize).then(data => {
             this.props.toggleIsFetching(false); //убираем прелоадер
             this.props.setUsers(data.items);
             this.props.setTotalUsersCount(data.totalCount);
@@ -46,7 +45,7 @@ class UsersContainer extends React.Component {
     onPageChanged = (pageNumber) => {
         this.props.toggleIsFetching(true);
         this.props.setCurrentPage(pageNumber);
-        getUsers(pageNumber,this.props.pageSize)
+        usersAPI.getUsers(pageNumber,this.props.pageSize)
             .then(data => {
                 this.props.toggleIsFetching(false);
                 this.props.setUsers(data.items);
