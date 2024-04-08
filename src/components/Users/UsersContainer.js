@@ -5,10 +5,9 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { follow, setCurrentPage, setTotalUsersCount, setUsers, toggleFollowingProgress, toggleIsFetching, unfollow } from '../../redux/users-reducer';
+import { follow, followSuccess, getUsers, setCurrentPage, toggleFollowingProgress, unfollow, unfollowSuccess } from '../../redux/users-reducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
-import { usersAPI } from '../../api/api';
 
 
 //Первая часть контейнерной компоненты - передача данных из редакса
@@ -29,29 +28,17 @@ let mapStateToProps = (state) => {
 ////////////////////////////////////////
 //Вторая часть контейнерной компоненты - классовая компонента для работы с API сервера
 class UsersContainer extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() { //сработает сразу после первой отрисовки рендером
-        this.props.toggleIsFetching(true); //помещаем прелоадер
-        //берем юзеров с учебного сайта
-        usersAPI.getUsers(this.props.currentPage,this.props.pageSize).then(data => {
-            this.props.toggleIsFetching(false); //убираем прелоадер
-            this.props.setUsers(data.items);
-            this.props.setTotalUsersCount(data.totalCount);
-        });
-    }
-
+        this.props.getUsers(this.props.currentPage,this.props.pageSize);
+    } //так как componentDidMount и onPageChanged здесь делают примерно одно и то же, я объединил все, что они делают, в одну функцию getUsersThunkCreator
     onPageChanged = (pageNumber) => {
-        this.props.toggleIsFetching(true);
-        this.props.setCurrentPage(pageNumber);
-        usersAPI.getUsers(pageNumber,this.props.pageSize)
-            .then(data => {
-                this.props.toggleIsFetching(false);
-                this.props.setUsers(data.items);
-            });
+        this.props.getUsers(pageNumber,this.props.pageSize);
     }
+    
+
+
+
     render() {
         return ( //в эту компоненту методы пришли через коннект, но дальше их надо передать вручную 
             //<> - обертка для Users 
@@ -63,10 +50,13 @@ class UsersContainer extends React.Component {
                     currentPage={this.props.currentPage}
                     onPageChanged={this.onPageChanged}
                     users={this.props.users}
+                    followSuccess={this.props.followSuccess}
+                    unfollowSuccess={this.props.unfollowSuccess}
                     follow={this.props.follow}
                     unfollow={this.props.unfollow}
                     followingInProgress = {this.props.followingInProgress}
                     toggleFollowingProgress={this.props.toggleFollowingProgress}
+                    
                 />
             </>
         )
@@ -79,12 +69,12 @@ class UsersContainer extends React.Component {
 //mapDispatchToProps будет задаваться не отдельно, а сразу в коннект
 export default connect(mapStateToProps,
     { // это mapDispatchToProps
-        follow,
-        unfollow,
-        setUsers,
+        followSuccess,
+        unfollowSuccess,
         setCurrentPage,
-        setTotalUsersCount,
-        toggleIsFetching,
-        toggleFollowingProgress
+        toggleFollowingProgress,
+        getUsers,
+        follow,
+        unfollow
     }
 )(UsersContainer);
