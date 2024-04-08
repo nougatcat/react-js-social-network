@@ -16,7 +16,7 @@ export const usersAPI = {
         //чтобы в респонсе было только то, что нужно, а не все, что присылает сервер
     },
 
-    //для HeaderContainer //пока не используется Thunk /переместить
+    //для HeaderContainer // используется Thunk 
     getMyProfileData() {
         return instance.get(`auth/me`)
             .then(response => response.data);
