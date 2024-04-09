@@ -3,6 +3,7 @@ import Profile from "./Profile";
 import { connect } from "react-redux";
 import { getUserProfile } from '../../redux/profile-reducer';
 //import { withRouter } from 'react-router'; //withRouter не существует в новой версии роутера
+import { Navigate } from 'react-router-dom';
 import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
 export const withRouter = (Component) => {
     return (props) => {
@@ -19,6 +20,7 @@ class ProfileContainer extends React.Component {
         this.props.getUserProfile(userId);
     }
     render() {
+        if (!this.props.isAuth) { return <Navigate to={'/login'} replace={true} />}
         return (
             <Profile {...this.props} profile={this.props.profile} />
         )
@@ -26,7 +28,8 @@ class ProfileContainer extends React.Component {
 }
 
 let mapStateToProps = (state) => ({ //альт запись ретурна
-    profile: state.profilePage.profile
+    profile: state.profilePage.profile,
+    isAuth: state.auth.isAuth
 
 });
 

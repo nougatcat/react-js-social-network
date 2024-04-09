@@ -2,6 +2,7 @@ import React from 'react';
 import css from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
+import { Navigate } from 'react-router-dom';
 
 
 // если компоненты больше нигде, кроме этого файла, не используются, то нет смысла выносить их отдельно, но можно вынести, чтобы файлы были короткие
@@ -26,6 +27,9 @@ const Dialogs = (props) => {
         props.updateNewMessageBody(body); //позволяет вводить в поле свое сообщение
     }
 
+    if (!props.isAuth) {
+        return <Navigate to={'/login'} replace={true} /> //Redirect больше нет в доме, используем Navigate
+    }
     return (
         <div>
             <div className={css.dialogs}>

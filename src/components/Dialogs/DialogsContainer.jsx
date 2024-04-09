@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 
 let mapStateToProps = (state) => { //данные из state
     return {
-        state: state.dialogsPage
+        state: state.dialogsPage,
+        isAuth: state.auth.isAuth
     }
 }
 let mapDispatchToProps = (dispatch) => { //коллбеки, которые отпраятся в презентационную компоненту
