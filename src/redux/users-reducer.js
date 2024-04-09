@@ -108,10 +108,10 @@ export const follow = (userId) => {
             .then(response => {
                 if (response.data.resultCode === 0) { //код 0 - сервер не вернул ошибку
                     dispatch(followSuccess(userId))
-                }
+                } 
                 dispatch(toggleFollowingProgress(false, userId));
             });
-    }
+    }//!на случай, если юзер не авторизован, все еще не предусмотрен обработчик ошибки при нажатии на follow
 }
 export const unfollow = (userId) => {
     return (dispatch) => {
