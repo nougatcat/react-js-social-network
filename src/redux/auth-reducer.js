@@ -1,4 +1,4 @@
-import { usersAPI } from "../api/api";
+import { authAPI } from "../api/api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 
@@ -23,12 +23,13 @@ const authReduser = (state = initialState, action) => {
     }
 };
 
-export const setAuthUserData = (id, email, login) => ({ type: SET_USER_DATA, data: { id, email, login } });
+//action creator не экспортируется за ненадобностью
+const setAuthUserData = (id, email, login) => ({ type: SET_USER_DATA, data: { id, email, login } });
 
 //? thunk creator
-export const getMyProfileData = () => {
+export const getAuthUserData = () => {
     return (dispatch) => {
-        usersAPI.getMyProfileData()
+        authAPI.getMyProfileData()
             .then(data => {
                 if (data.resultCode === 0) {
                     let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием

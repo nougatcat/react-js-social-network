@@ -16,16 +16,9 @@ export const usersAPI = {
         //чтобы в респонсе было только то, что нужно, а не все, что присылает сервер
     },
 
-    //для HeaderContainer // используется Thunk 
-    getMyProfileData() {
-        return instance.get(`auth/me`)
-            .then(response => response.data);
-    },
-
     //для ProfileContainer //пока не используется Thunk /переместить
-    getProfileInfo(userId = 1) {
+    getUserProfile(userId = 1) {
         return axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
-            .then(response => response.data);
     },
 
     //для Users //используется Thunk
@@ -35,6 +28,15 @@ export const usersAPI = {
     unfollow(userId) {
         return instance.delete(`follow/${userId}`)
     }
+}
+
+export const authAPI = {
+        //для HeaderContainer // используется Thunk 
+        getMyProfileData() {
+            return instance.get(`auth/me`)
+                .then(response => response.data);
+        }
+
 }
 
 

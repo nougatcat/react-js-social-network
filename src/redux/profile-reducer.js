@@ -52,14 +52,13 @@ export const updateNewPostTextActionCreator = (text) => {
         newText: text
     }
 }
-export const setUserProfile = (profile) => ({type: SET_USER_PROFILE,profile})
+const setUserProfile = (profile) => ({type: SET_USER_PROFILE,profile})
 
-//! не работает
 //? thunk creator
-export const getProfileInfo = (userId) => {
+export const getUserProfile = (userId) => {
     return (dispatch) => {
-        usersAPI.getProfileInfo(userId).then(data => {
-            dispatch(setUserProfile(data));
+        usersAPI.getUserProfile(userId).then(response => {
+            dispatch(setUserProfile(response.data));
         })
     }
 }
