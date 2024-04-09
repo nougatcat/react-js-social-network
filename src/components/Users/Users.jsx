@@ -30,13 +30,15 @@ let Users = (props) => {
                             </div>
                             <div>
                                 {
-                                    user.followed
-                                        ? <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
-                                            props.unfollow(user.id);
-                                        }}>Unfollow</button>
-                                        : <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
-                                            props.follow(user.id);
-                                        }}>Follow</button>
+                                    props.isAuth ? //кнопки follow и unfollow есть только если юзер авторизован (этого не было в уроках, я сам добавил)
+                                        user.followed
+                                            ? <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
+                                                props.unfollow(user.id);
+                                            }}>Unfollow</button>
+                                            : <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
+                                                props.follow(user.id);
+                                            }}>Follow</button>
+                                        : ''
                                 }
                             </div>
                         </span>
