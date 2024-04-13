@@ -11,7 +11,7 @@ import LoginPage from './components/Login/Login';
 
 const App = (props) => {
 
-  return (
+  return ( //возвращаем jsx разметку с другими компонентами
     <BrowserRouter> {/* обрамление для роутинга */}
       <div className="app-wrapper">
 
