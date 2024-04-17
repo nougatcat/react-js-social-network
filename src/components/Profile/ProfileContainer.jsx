@@ -3,9 +3,9 @@ import Profile from "./Profile";
 import { connect } from "react-redux";
 import { getUserProfile } from '../../redux/profile-reducer';
 //import { withRouter } from 'react-router'; //withRouter не существует в новой версии роутера
-import { Navigate } from 'react-router-dom';
 import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 export const withRouter = (Component) => {
     return (props) => {
         const match = { params: useParams() };
@@ -28,14 +28,13 @@ class ProfileContainer extends React.Component {
     }
 }
 
-
-let AuthRedirectComponent = withAuthRedirect(ProfileContainer);
-
-
 let mapStateToProps = (state) => ({ 
     profile: state.profilePage.profile
 });
 
-let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent); //для отслеживания адресной строки
 
-export default connect(mapStateToProps, { getUserProfile })(WithUrlDataContainerComponent);
+export default compose(
+    connect(mapStateToProps, { getUserProfile }),
+    withRouter,
+    withAuthRedirect
+)(ProfileContainer)

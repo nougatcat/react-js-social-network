@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { follow, followSuccess, getUsers, setCurrentPage, toggleFollowingProgress, unfollow, unfollowSuccess } from '../../redux/users-reducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
+import { compose } from 'redux';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 
 //Первая часть контейнерной компоненты - передача данных из редакса
@@ -68,14 +70,17 @@ class UsersContainer extends React.Component {
 //export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
 
 //mapDispatchToProps будет задаваться не отдельно, а сразу в коннект
-export default connect(mapStateToProps,
-    { // это mapDispatchToProps
-        followSuccess,
-        unfollowSuccess,
-        setCurrentPage,
-        toggleFollowingProgress,
-        getUsers,
-        follow,
-        unfollow
-    }
-)(UsersContainer);
+
+export default compose(
+    withAuthRedirect,
+    connect(mapStateToProps,
+        { // это mapDispatchToProps
+            followSuccess,
+            unfollowSuccess,
+            setCurrentPage,
+            toggleFollowingProgress,
+            getUsers,
+            follow,
+            unfollow
+        })
+)(UsersContainer)
