@@ -1,7 +1,7 @@
 import Preloader from '../../common/Preloader/Preloader';
 import css from './ProfileInfo.module.css'
 import userPhoto from '../../../assets/images/user.png';
-
+import ProfileStatus from './ProfileStatus';
 
 const ProfileInfo = (props) => {
     if (!props.profile) { //если профиль = null or undefined
@@ -18,6 +18,8 @@ const ProfileInfo = (props) => {
                 <div>Обо мне: {props.profile.aboutMe}</div>
                 <div>ВК: {props.profile.contacts.vk != null ? props.profile.contacts.vk : 'Нет вк'}</div>
                 <div>{props.profile.lookingForAJob ? 'Ищу работу' : 'Не ищу работу'}</div>
+                <h3>Статус:</h3>
+                <ProfileStatus status={'заглушка'}/>
             </div>        
         </div>
     )

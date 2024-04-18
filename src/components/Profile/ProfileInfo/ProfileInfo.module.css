@@ -4,11 +4,14 @@
     width: 800px;
 }
 
-.posts {
-}
+/* .posts {
+} */
 /* .item {
     color: greenyellow;
 }  */
 .description {
     padding: 10px;
+}
+.change__status {
+    cursor:pointer; 
 }
