@@ -4,19 +4,26 @@ import React from "react";
 
 
 class ProfileStatus extends React.Component {
+
     //локальный state
     state = {
-        editMode: false
+        editMode: false,
+        status: this.props.status
     } 
 
     activateEditMode() {
         this.setState( { //асинхронная функция, выполняется после всей отрисовки
             editMode: true
         })
-        // this.forceUpdate(); //не стоит использовать для переотрисовки вместо сетстейт
     }
-    deactivateEditMode() {
+    deactivateEditMode = () => { //альт запись чтобы не биндить 
         this.setState( {editMode: false} )
+        this.props.updateStatus(this.state.status) //статус из локального стейта передается в глобальный и на сервер
+    }
+    onStatusChange = (event) => {
+        this.setState({
+            status: event.currentTarget.value
+        })
     }
 
     render() {
@@ -25,13 +32,13 @@ class ProfileStatus extends React.Component {
                 {!this.state.editMode && 
                     <div>
                         <span className={css.change__status} onClick={this.activateEditMode.bind(this)}>
-                            {this.props.status}
+                            {!this.props.status ? 'задать статус' : this.props.status}
                         </span>
                     </div>
                 }
                 {this.state.editMode &&
                     <div>
-                        <input autoFocus={true} onBlur={this.deactivateEditMode.bind(this)}  value={this.props.status}/>
+                        <input onChange={this.onStatusChange} autoFocus={true} onBlur={this.deactivateEditMode}  value={this.state.status}/> {/* если написать value={this.props.status}, то не будет работать, так как в пропсах приходит глобалный статус и его нельзя изменить через поле ввода */}
                     </div>
                 }
             </div>

@@ -16,23 +16,34 @@ export const usersAPI = {
         //чтобы в респонсе было только то, что нужно, а не все, что присылает сервер
     },
 
-    //для ProfileContainer //пока не используется Thunk /переместить
-    getUserProfile(userId = 1) {
-        return axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
-    },
-
     //для Users //используется Thunk
     follow(userId) { 
         return instance.post(`follow/${userId}`)
     },
     unfollow(userId) {
         return instance.delete(`follow/${userId}`)
+    },
+    getUserProfile(userId = 1) {
+        console.warn('Obsolete method. Use profileAPI.getUsersProfile instead')
+        return profileAPI.getUserProfile(userId)
+    }
+}
+
+export const profileAPI = {
+    //для ProfileContainer //пока не используется Thunk /переместить
+    getUserProfile(userId = 1) {
+        return axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
+    },
+    getStatus(userId) {
+        return instance.get('profile/status/' + userId)
+    },
+    updateStatus(status) {
+        return instance.put('profile/status/', {status: status}) //отправляем на сервер объект со свойством status 
     }
 }
 
 export const authAPI = {
-        //для HeaderContainer // используется Thunk 
-        getMyProfileData() {
+        me() {
             return instance.get(`auth/me`)
                 .then(response => response.data);
         }

@@ -19,7 +19,7 @@ const ProfileInfo = (props) => {
                 <div>ВК: {props.profile.contacts.vk != null ? props.profile.contacts.vk : 'Нет вк'}</div>
                 <div>{props.profile.lookingForAJob ? 'Ищу работу' : 'Не ищу работу'}</div>
                 <h3>Статус:</h3>
-                <ProfileStatus status={'заглушка'}/>
+                <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
             </div>        
         </div>
     )
