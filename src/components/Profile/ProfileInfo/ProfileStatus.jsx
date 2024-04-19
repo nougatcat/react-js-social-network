@@ -25,6 +25,13 @@ class ProfileStatus extends React.Component {
             status: event.currentTarget.value
         })
     }
+    componentDidUpdate(prevProps, prevState) { //prev - previous (до момента обновления)
+        if (prevProps.status !== this.props.status) { //синхронизация global state, чтобы не был пустой статус при редактировании
+            this.setState({
+                status: this.props.status
+            })
+        }
+    }
 
     render() {
         return (
