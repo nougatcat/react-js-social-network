@@ -14,7 +14,7 @@ const Navbar = () => {
             <div>
                 <NavLink to="/dialogs" className = { navData => navData.isActive ? css.active : css.item }>Сообщения</NavLink>
             </div>
-            <div>
+            {/* <div>
                 <NavLink to="/news" className = { navData => navData.isActive ? css.active : css.item }>Новости</NavLink>
             </div>
             <div>
@@ -22,7 +22,7 @@ const Navbar = () => {
             </div>
             <div>
                 <NavLink to="/settings" className = { navData => navData.isActive ? css.active : css.item }>Настройки</NavLink>
-            </div> 
+            </div>  */}
             <div>
                 <NavLink to="/users" className = { navData => navData.isActive ? css.active : css.item }>Пользователи</NavLink>
             </div> 
