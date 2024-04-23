@@ -1,0 +1,13 @@
+.form__control {
+
+}
+
+.form__control.error input,
+.form__control.error textarea 
+{
+    border: solid red 2px;
+}
+.form__control.error span {
+    color: rgb(156, 3, 3);
+}
+

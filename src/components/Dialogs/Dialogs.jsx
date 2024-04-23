@@ -4,7 +4,10 @@ import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import { Navigate } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
+import { Textarea } from '../common/FormControls/FormControls';
+import { maxLengthCreator, required } from '../../utilities/validators/validators';
 
+const maxLength50 = maxLengthCreator(50)
 
 // если компоненты больше нигде, кроме этого файла, не используются, то нет смысла выносить их отдельно, но можно вынести, чтобы файлы были короткие
 
@@ -13,7 +16,8 @@ const AddMessageForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field component={'textarea'} name='newMessageBody' placeholder='Введите сообщение'></Field>
+                <Field component={Textarea} validate={[required, maxLength50]}
+                    name='newMessageBody' placeholder='Введите сообщение'></Field>
             </div>
             <div><button>Отправить</button></div>
         </form>
