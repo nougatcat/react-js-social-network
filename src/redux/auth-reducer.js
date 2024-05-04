@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import { authAPI } from "../api/api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
@@ -43,6 +44,11 @@ export const login = (email, password, rememberMe) => (dispatch) => {
         .then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(getAuthUserData())
+            }
+            else {
+                let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Неопознанная ошибка'
+                dispatch(stopSubmit("login", {_error: message}))
+                //response.data.messages - это ошибки, которые посылает сервер
             }
         })
 }

@@ -23,13 +23,3 @@ export const Input = (props) => {
     const {input, meta, children, ...remainingProps} = props;
     return <FormControl {...props}><input {...input} {...remainingProps}/></FormControl>
 }
-
-// export const Input = ({input, meta, ...props}) => {
-//     const hasError = meta.touched && meta.error
-//     return (
-//         <div className={styles.form__control + " " + (hasError ? styles.error : "")} >
-//             <div><input {...props} {...input}/></div>
-//             {hasError && <span>{meta.error}</span>}
-//         </div>
-//     )
-// }
