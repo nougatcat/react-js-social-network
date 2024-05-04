@@ -14,17 +14,17 @@ const authReduser = (state = initialState, action) => {
         case SET_USER_DATA: {
             return {
                 ...state,
-                ...action.data, //полученные с сервера данные юзера
-                isAuth: true //если пришли данные юзера, то залогинен
+                ...action.payload, //полученные с сервера данные юзера
             };
         }
+
         default:
             return state;
     }
 };
 
 //action creator не экспортируется за ненадобностью
-const setAuthUserData = (id, email, login) => ({ type: SET_USER_DATA, data: { id, email, login } });
+const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { id, email, login, isAuth } });
 
 //? thunk creator
 export const getAuthUserData = () => {
@@ -33,9 +33,25 @@ export const getAuthUserData = () => {
             .then(data => {
                 if (data.resultCode === 0) {
                     let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием
-                    dispatch(setAuthUserData(id, email, login));
+                    dispatch(setAuthUserData(id, email, login, true));
                 }
             })
     }
+}
+export const login = (email, password, rememberMe) => (dispatch) => {
+    authAPI.login(email, password, rememberMe)
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(getAuthUserData())
+            }
+        })
+}
+export const logout = () => (dispatch) => {
+    authAPI.logout()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(setAuthUserData(null, null, null, false))
+            }
+        })
 }
 export default authReduser;
