@@ -90,11 +90,11 @@ export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isF
 export const toggleFollowingProgress = (isFetching, userId) => ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId })
 
 //? TC - thunk creator-ы
-export const getUsers = (currentPage, pageSize) => { //это thunk creator
+export const requestUsers = (page, pageSize) => { //это thunk creator
     return (dispatch) => { //это thunk
         dispatch(toggleIsFetching(true)); //помещаем прелоадер
-        dispatch(setCurrentPage(currentPage))
-        usersAPI.getUsers(currentPage, pageSize).then(data => { //берем юзеров с учебного сайта
+        dispatch(setCurrentPage(page))
+        usersAPI.getUsers(page, pageSize).then(data => { //берем юзеров с учебного сайта
             dispatch(toggleIsFetching(false)); //убираем прелоадер
             dispatch(setUsers(data.items));
             dispatch(setTotalUsersCount(data.totalCount));
@@ -111,7 +111,7 @@ export const follow = (userId) => {
                 } 
                 dispatch(toggleFollowingProgress(false, userId));
             });
-    }//!на случай, если юзер не авторизован, все еще не предусмотрен обработчик ошибки при нажатии на follow
+    }//? на случай, если юзер не авторизован, кнопки follow и unfollow скрыты в ui
 }
 export const unfollow = (userId) => {
     return (dispatch) => {

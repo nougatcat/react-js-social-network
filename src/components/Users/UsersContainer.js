@@ -5,25 +5,39 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { follow, followSuccess, getUsers, setCurrentPage, toggleFollowingProgress, unfollow, unfollowSuccess } from '../../redux/users-reducer';
+import { follow, followSuccess, requestUsers, setCurrentPage, toggleFollowingProgress, unfollow, unfollowSuccess } from '../../redux/users-reducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
 import { compose } from 'redux';
+import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers} from '../../redux/users-selectors';
 // import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 
 //Первая часть контейнерной компоненты - передача данных из редакса
+// let mapStateToProps = (state) => {
+//     return {
+//         users: state.usersPage.users,
+//         pageSize: state.usersPage.pageSize,
+//         totalUsersCount: state.usersPage.totalUsersCount,
+//         currentPage: state.usersPage.currentPage,
+//         isFetching: state.usersPage.isFetching,
+//         followingInProgress: state.usersPage.followingInProgress,
+//         isAuth: state.auth.isAuth
+//     }
+// }
 let mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress,
+        users: getUsers(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
         isAuth: state.auth.isAuth
     }
 }
+
+
 
 //mapDispatchToProps зарефакторен прямо в экспорт
 
@@ -33,10 +47,10 @@ let mapStateToProps = (state) => {
 class UsersContainer extends React.Component {
 
     componentDidMount() { //сработает сразу после первой отрисовки рендером
-        this.props.getUsers(this.props.currentPage,this.props.pageSize);
-    } //так как componentDidMount и onPageChanged здесь делают примерно одно и то же, я объединил все, что они делают, в одну функцию getUsersThunkCreator
+        this.props.requestUsers(this.props.currentPage,this.props.pageSize);
+    } //так как componentDidMount и onPageChanged здесь делают примерно одно и то же, я объединил все, что они делают, в одну функцию requestUsersThunkCreator
     onPageChanged = (pageNumber) => {
-        this.props.getUsers(pageNumber,this.props.pageSize);
+        this.props.requestUsers(pageNumber,this.props.pageSize);
     }
     
 
@@ -79,7 +93,7 @@ export default compose(
             unfollowSuccess,
             setCurrentPage,
             toggleFollowingProgress,
-            getUsers,
+            requestUsers,
             follow,
             unfollow
         })
