@@ -9,7 +9,7 @@ import { follow, followSuccess, getUsers, setCurrentPage, toggleFollowingProgres
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
 import { compose } from 'redux';
-import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+// import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 
 //Первая часть контейнерной компоненты - передача данных из редакса
@@ -72,7 +72,7 @@ class UsersContainer extends React.Component {
 //mapDispatchToProps будет задаваться не отдельно, а сразу в коннект
 
 export default compose(
-    withAuthRedirect,
+    // withAuthRedirect,
     connect(mapStateToProps,
         { // это mapDispatchToProps
             followSuccess,

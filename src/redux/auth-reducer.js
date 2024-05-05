@@ -30,7 +30,7 @@ const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, pa
 //? thunk creator
 export const getAuthUserData = () => {
     return (dispatch) => {
-        authAPI.me()
+        return authAPI.me() //return чтобы можно было then извне вызвать
             .then(data => {
                 if (data.resultCode === 0) {
                     let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием
