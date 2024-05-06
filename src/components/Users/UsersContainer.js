@@ -9,7 +9,7 @@ import { follow, followSuccess, requestUsers, setCurrentPage, toggleFollowingPro
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
 import { compose } from 'redux';
-import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers} from '../../redux/users-selectors';
+import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers } from '../../redux/users-selectors';
 // import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 
@@ -27,7 +27,7 @@ import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, get
 // }
 let mapStateToProps = (state) => {
     return {
-        users: getUsers(state),
+        users: getUsers(state), //Reselect
         pageSize: getPageSize(state),
         totalUsersCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),
