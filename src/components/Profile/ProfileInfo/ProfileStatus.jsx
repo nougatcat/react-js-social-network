@@ -45,7 +45,8 @@ class ProfileStatus extends React.Component {
                 }
                 {this.state.editMode &&
                     <div>
-                        <input onChange={this.onStatusChange} autoFocus={true} onBlur={this.deactivateEditMode}  value={this.state.status}/> {/* если написать value={this.props.status}, то не будет работать, так как в пропсах приходит глобалный статус и его нельзя изменить через поле ввода */}
+                        <input onChange={this.onStatusChange} autoFocus={true} onBlur={this.deactivateEditMode}  value={this.state.status}/> 
+                        {/* если написать value={this.props.status}, то не будет работать, так как в пропсах приходит глобалный статус и его нельзя изменить через поле ввода */}
                     </div>
                 }
             </div>
