@@ -11,8 +11,8 @@ const AddPostForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field component={Textarea} name='newPostElement' 
-                validate={[required, maxLength10]} placeholder='Что у вас нового?' />
+                <Field component={Textarea} name='newPostElement'
+                    validate={[required, maxLength10]} placeholder='Что у вас нового?' />
             </div>
             <div>
                 <button>Опубликовать</button>
@@ -21,11 +21,11 @@ const AddPostForm = (props) => {
     )
 }
 
-const AddPostReduxForm = reduxForm ({form: 'ProfileAddPostForm'})(AddPostForm)
+const AddPostReduxForm = reduxForm({ form: 'ProfileAddPostForm' })(AddPostForm)
 
 
 
-const MyPosts = (props) => {
+const MyPosts = React.memo(props => { //для примера из урока 87
 
     let postsElements = props.posts
         .map(post => <Post message={post.message} likes={post.likesCount} />);
@@ -45,6 +45,32 @@ const MyPosts = (props) => {
             </div>
         </div>
     )
-}
+})
+// class MyPosts extends React.PureComponent {
+
+//     render() {
+//         console.log('renderererere')
+//         let postsElements = this.props.posts
+//             .map(post => <Post message={post.message} likes={post.likesCount} />);
+
+//         let toAddPost = (values) => {
+//             this.props.addPost(values.newPostElement);
+//         };
+
+//         return (
+//             <div className={classes.posts}>
+//                 <h3>Мои посты</h3>
+//                 <div>
+//                     <AddPostReduxForm onSubmit={toAddPost} />
+//                 </div>
+//                 <div className={classes.posts__msg}>
+//                     {postsElements}
+//                 </div>
+//             </div>
+//         )
+
+//     }
+
+// }
 
 export default MyPosts;
