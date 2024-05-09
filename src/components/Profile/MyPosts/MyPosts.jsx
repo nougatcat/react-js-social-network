@@ -27,8 +27,9 @@ const AddPostReduxForm = reduxForm({ form: 'ProfileAddPostForm' })(AddPostForm)
 
 const MyPosts = React.memo(props => { //для примера из урока 87
 
-    let postsElements = props.posts
-        .map(post => <Post message={post.message} likes={post.likesCount} />);
+    //важно использовать не reverse(), так как реверс не создаст новый массив, а изменит старый. для примера из урока 88, если использовать reverse, то постоянно будет при перерисовке реверсить массив и он будет то с начала, то с конца
+    let postsElements = props.posts.toReversed() 
+        .map (post => <Post message={post.message} likes={post.likesCount} />);
 
     let toAddPost = (values) => {
         props.addPost(values.newPostElement);
