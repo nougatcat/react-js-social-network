@@ -1,7 +1,7 @@
 import { stopSubmit } from "redux-form";
 import { authAPI } from "../api/api";
 
-const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_DATA = 'auth/SET_USER_DATA';
 
 let initialState = {
     id: null,
@@ -28,36 +28,28 @@ const authReduser = (state = initialState, action) => {
 const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { id, email, login, isAuth } });
 
 //? thunk creator
-export const getAuthUserData = () => {
-    return (dispatch) => {
-        return authAPI.me() //return чтобы можно было then извне вызвать
-            .then(data => {
-                if (data.resultCode === 0) {
-                    let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием
-                    dispatch(setAuthUserData(id, email, login, true));
-                }
-            })
+export const getAuthUserData = () => async (dispatch) => { //ретурн заменили на стрелку
+    const data = await authAPI.me() //вместо обычного промиса пишем await функцию (более короткий код)
+    if (data.resultCode === 0) {
+        let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием
+        dispatch(setAuthUserData(id, email, login, true));
     }
 }
-export const login = (email, password, rememberMe) => (dispatch) => {
-    authAPI.login(email, password, rememberMe)
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(getAuthUserData())
-            }
-            else {
-                let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Неопознанная ошибка'
-                dispatch(stopSubmit("login", {_error: message}))
-                //response.data.messages - это ошибки, которые посылает сервер
-            }
-        })
+export const login = (email, password, rememberMe) => async (dispatch) => {
+    const response = await authAPI.login(email, password, rememberMe)
+    if (response.data.resultCode === 0) {
+        dispatch(getAuthUserData())
+    }
+    else {
+        let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Неопознанная ошибка'
+        dispatch(stopSubmit("login", { _error: message }))
+        //response.data.messages - это ошибки, которые посылает сервер
+    }
 }
-export const logout = () => (dispatch) => {
-    authAPI.logout()
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setAuthUserData(null, null, null, false))
-            }
-        })
+export const logout = () => async (dispatch) => {
+    const response = await authAPI.logout()
+    if (response.data.resultCode === 0) {
+        dispatch(setAuthUserData(null, null, null, false))
+    }
 }
 export default authReduser;

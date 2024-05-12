@@ -6,7 +6,7 @@ const SET_STATUS = 'SET_STATUS';
 const DELETE_POST = 'DELETE_POST';
 
 let initialState = {
-    posts : [
+    posts: [
         { id: 1, message: 'Я что-то написал', likesCount: 2 },
         { id: 2, message: 'Привет мир', likesCount: 51 }
     ],
@@ -16,7 +16,7 @@ let initialState = {
 
 const profileReducer = (state = initialState, action) => {
 
-    switch(action.type) {
+    switch (action.type) {
         case ADD_POST: {
             let newPost = {
                 id: 5,
@@ -54,16 +54,12 @@ const profileReducer = (state = initialState, action) => {
 export const addPostActionCreator = (newPostElement) => ({type: ADD_POST, newPostElement}); //то же самое, что с ретурном
 export const setUserProfile = (profile) => ({type: SET_USER_PROFILE,profile})
 export const setStatus = (status) => ({type: SET_STATUS,status})
-export const deletePost = (postId) => ({type: DELETE_POST, postId})
 
 //? thunk creator
-export const getUserProfile = (userId) => {
-    return (dispatch) => {
-        profileAPI.getUserProfile(userId).then(response => {
-            dispatch(setUserProfile(response.data));
-        })
-    }
-}
+export const getUserProfile = (userId) => async (dispatch) => {
+    const response = await profileAPI.getUserProfile(userId)
+    dispatch(setUserProfile(response.data));
+} //специально рядом оставил async-await и обычный промис для наглядности (по сути одно и то же)
 export const getStatus = (userId) => {
     return (dispatch) => {
         profileAPI.getStatus(userId).then(response => {
@@ -71,13 +67,11 @@ export const getStatus = (userId) => {
         })
     }
 }
-export const updateStatus = (status) => (dispatch) => {
-    profileAPI.updateStatus(status)
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setStatus(status));
-            }
-        });
+export const updateStatus = (status) => async (dispatch) => {
+    const response = await profileAPI.updateStatus(status)
+    if (response.data.resultCode === 0) {
+        dispatch(setStatus(status));
+    }
 }
 
 
