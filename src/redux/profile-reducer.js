@@ -1,9 +1,9 @@
 import { profileAPI } from "../api/api";
 
-const ADD_POST = 'ADD-POST'; //глобальная переменная типа для того, чтобы упростить (на самом деле это усложняет код)
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_STATUS = 'SET_STATUS';
-const DELETE_POST = 'DELETE_POST';
+const ADD_POST = 'profilePage/ADD-POST'; //глобальная переменная типа для того, чтобы упростить (на самом деле это усложняет код)
+const SET_USER_PROFILE = 'profilePage/SET_USER_PROFILE';
+const SET_STATUS = 'profilePage/SET_STATUS';
+const DELETE_POST = 'profilePage/DELETE_POST';
 
 let initialState = {
     posts: [
