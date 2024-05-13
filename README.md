@@ -1,3 +1,6 @@
+Это мой учебный проект по разработке Single Page Application с использованием React, Redux, Axios и других библиотек. Обучаюсь по урокам "React JS - Путь самурая"
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
