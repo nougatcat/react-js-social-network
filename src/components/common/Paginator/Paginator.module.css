@@ -1,5 +1,5 @@
 
-.selectedPage {
+/* .selectedPage {
     font-weight: bold;
     cursor: pointer;
     padding: 5px;
@@ -10,4 +10,18 @@
     overflow-x: scroll;
     overflow-y: hidden;
     width: 300px;
+} */
+
+.paginator {
+    margin: 10px;
+}
+.pageNumber {
+    padding: 2px;
+    border: 1px solid grey;
+    cursor: pointer;
+}
+
+.pageNumber.selectedPage {
+    font-weight: bold;
+    border-color: black;
 }

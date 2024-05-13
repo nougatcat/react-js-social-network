@@ -9,11 +9,11 @@ let Users = (props) => {
         <div className={styles.wrapper}>
             <Paginator currentPage={props.currentPage}
                 onPageChanged={props.onPageChanged}
-                totalUsersCount={props.totalUsersCount}
+                totalItemsCount={props.totalUsersCount}
                 pageSize={props.pageSize}/>
             {
                 props.users.map(user => <User user={user}
-                                            key={user.id} //зачем нужен key?
+                                            key={user.id} //key - сервисная переменная для индексации, нужна чтобы не отрисовывалось то, что уже отрисовано. в компоненте не используется вручную
                                             followingInProgress={props.followingInProgress}
                                             unfollow={props.unfollow}
                                             follow={props.follow}

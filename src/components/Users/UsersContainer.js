@@ -51,8 +51,8 @@ class UsersContainer extends React.Component {
         this.props.requestUsers(currentPage,pageSize);
     } //так как componentDidMount и onPageChanged здесь делают примерно одно и то же, я объединил все, что они делают, в одну функцию requestUsersThunkCreator
     onPageChanged = (pageNumber) => {
-        // this.props.requestUsers(pageNumber,this.props.pageSize); //сделал деструктуризацию (урок 90)
-        const pageSize = this.props
+        //this.props.requestUsers(pageNumber,this.props.pageSize);
+        const {pageSize} = this.props //эти две строки аналогичны тому, что закомментировано сверху. Важно писать {}, иначе не будет корректно работать
         this.props.requestUsers(pageNumber,pageSize);
     }
     
