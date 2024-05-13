@@ -47,10 +47,13 @@ let mapStateToProps = (state) => {
 class UsersContainer extends React.Component {
 
     componentDidMount() { //сработает сразу после первой отрисовки рендером
-        this.props.requestUsers(this.props.currentPage,this.props.pageSize);
+        const {currentPage, pageSize} = this.props
+        this.props.requestUsers(currentPage,pageSize);
     } //так как componentDidMount и onPageChanged здесь делают примерно одно и то же, я объединил все, что они делают, в одну функцию requestUsersThunkCreator
     onPageChanged = (pageNumber) => {
-        this.props.requestUsers(pageNumber,this.props.pageSize);
+        // this.props.requestUsers(pageNumber,this.props.pageSize); //сделал деструктуризацию (урок 90)
+        const pageSize = this.props
+        this.props.requestUsers(pageNumber,pageSize);
     }
     
 
@@ -88,7 +91,7 @@ class UsersContainer extends React.Component {
 export default compose(
     // withAuthRedirect,
     connect(mapStateToProps,
-        { // это mapDispatchToProps
+        { // это mapDispatchToProps т.е. это не импорты, а коллбэки
             followSuccess,
             unfollowSuccess,
             setCurrentPage,

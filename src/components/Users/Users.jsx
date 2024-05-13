@@ -1,58 +1,24 @@
 import React from 'react';
 import styles from './Users.module.css';
-import userPhoto from '../../assets/images/user.png';
-import { NavLink } from 'react-router-dom';
+import Paginator from '../common/Paginator/Paginator';
+import User from './User';
 
 let Users = (props) => {
 
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
-    let pages = [];
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i);
-    }
-
     return (
         <div className={styles.wrapper}>
-            <div className={styles.pageNumbers}>
-                {pages.map(page => {
-                    return <span className={props.currentPage === page && styles.selectedPage}
-                        onClick={() => props.onPageChanged(page)}>{page}</span>
-                })}
-            </div>
+            <Paginator currentPage={props.currentPage}
+                onPageChanged={props.onPageChanged}
+                totalUsersCount={props.totalUsersCount}
+                pageSize={props.pageSize}/>
             {
-                props.users.map(user =>
-                    <div key={user.id}>
-                        <span>
-                            <div>
-                                <NavLink to={'/profile/' + user.id}>
-                                    <img src={user.photos.small != null ? user.photos.small : userPhoto} className={styles.userPhoto} />
-                                </NavLink>
-                            </div>
-                            <div>
-                                {
-                                    props.isAuth ? //кнопки follow и unfollow есть только если юзер авторизован (этого не было в уроках, я сам добавил)
-                                        user.followed
-                                            ? <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
-                                                props.unfollow(user.id);
-                                            }}>Unfollow</button>
-                                            : <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
-                                                props.follow(user.id);
-                                            }}>Follow</button>
-                                        : ''
-                                }
-                            </div>
-                        </span>
-                        <span>
-                            <span>
-                                <div>{user.name}</div>
-                                <div>{user.status}</div>
-                            </span>
-                            {/* <span>
-                                <div>{'user.location.country'}</div>
-                                <div>{'user.location.city'}</div>
-                            </span> */}
-                        </span>
-                    </div>)
+                props.users.map(user => <User user={user}
+                                            key={user.id} //зачем нужен key?
+                                            followingInProgress={props.followingInProgress}
+                                            unfollow={props.unfollow}
+                                            follow={props.follow}
+                                            isAuth={props.isAuth}/>
+                )
             }
         </div>
     )

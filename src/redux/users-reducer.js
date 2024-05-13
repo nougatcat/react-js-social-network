@@ -1,4 +1,5 @@
 import { usersAPI } from "../api/api";
+import { updateObjectInArray } from "../utilities/object-helpers";
 
 const FOLLOW = 'usersPage/FOLLOW';
 const UNFOLLOW = 'usersPage/UNFOLLOW';
@@ -20,26 +21,27 @@ let initialState = {
 
 const usersReduser = (state = initialState, action) => {
     switch (action.type) {
+        // case FOLLOW: {
+        //     return {
+        //         ...state,
+        //         users: state.users.map(user => {
+        //             if (user.id === action.userId) {
+        //                 return { ...user, followed: true }
+        //             }
+        //             return user;
+        //         })
+        //     };
+        // } //?создали хелпер, который делает то же самое, чтобы не дублировать код
         case FOLLOW: {
             return {
                 ...state,
-                users: state.users.map(user => {
-                    if (user.id === action.userId) {
-                        return { ...user, followed: true }
-                    }
-                    return user;
-                })
+                users: updateObjectInArray(state.users, action.userId, "id", {followed: true})
             };
         }
         case UNFOLLOW: {
             return {
                 ...state,
-                users: state.users.map(user => {
-                    if (user.id === action.userId) {
-                        return { ...user, followed: false }
-                    }
-                    return user;
-                })
+                users: updateObjectInArray(state.users, action.userId, "id", {followed: false})
             };
         }
         case SET_USERS: { //обновление списка пользователей
@@ -101,35 +103,52 @@ export const requestUsers = (page, pageSize) => { //это thunk creator
         });
     }
 }
+//? на случай, если юзер не авторизован, кнопки follow и unfollow скрыты в ui
+const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
+    dispatch(toggleFollowingProgress(true, userId))
+    const response = await apiMethod(userId)
+    if (response.data.resultCode === 0) { //код 0 - сервер не вернул ошибку
+        dispatch(actionCreator(userId))
+    }
+    dispatch(toggleFollowingProgress(false, userId));
+}//? общий метод для follow и unfollow, чтобы не дублировать код
 export const follow = (userId) => {
-    return (dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        usersAPI.follow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) { //код 0 - сервер не вернул ошибку
-                    dispatch(followSuccess(userId))
-                } 
-                dispatch(toggleFollowingProgress(false, userId));
-            });
-    }//? на случай, если юзер не авторизован, кнопки follow и unfollow скрыты в ui
+    return async (dispatch) => {
+        //bind так как будет выполняться в другом месте
+        followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followSuccess)
+    }
 }
 export const unfollow = (userId) => {
-    return (dispatch) => {
-        dispatch(toggleFollowingProgress(true, userId));
-        usersAPI.unfollow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) { //код 0 - сервер не вернул ошибку
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(false, userId));
-            });
+    return async (dispatch) => {
+        followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess)
     }
 }
 
-
-
-
-
+//!Более простая прошлая версися follow/unfollow, которая не имеет дублирования кода, работает также
+// export const follow = (userId) => {
+//     return (dispatch) => {
+//         dispatch(toggleFollowingProgress(true, userId));
+//         usersAPI.follow(userId)
+//             .then(response => {
+//                 if (response.data.resultCode === 0) { //код 0 - сервер не вернул ошибку
+//                     dispatch(followSuccess(userId))
+//                 } 
+//                 dispatch(toggleFollowingProgress(false, userId));
+//             });
+//     }
+// }
+// export const unfollow = (userId) => {
+//     return (dispatch) => {
+//         dispatch(toggleFollowingProgress(true, userId));
+//         usersAPI.unfollow(userId)
+//             .then(response => {
+//                 if (response.data.resultCode === 0) { //код 0 - сервер не вернул ошибку
+//                     dispatch(unfollowSuccess(userId))
+//                 }
+//                 dispatch(toggleFollowingProgress(false, userId));
+//             });
+//     }
+// }
 
 
 

@@ -7,8 +7,8 @@ import { login } from "../../redux/auth-reducer";
 import { Navigate } from "react-router-dom";
 import styles from "./../common/FormControls/FormControls.module.css";
 
-const LoginForm = (props) => {
-    return <form action="" onSubmit={props.handleSubmit}>
+const LoginForm = ({handleSubmit, error}) => { //альтернативное принятие пропсов (только конкретных)
+    return <form action="" onSubmit={handleSubmit}>
         <div>
             <Field component={Input} validate={[required]}
                 name="email" type="text" placeholder="Email" />
@@ -19,10 +19,11 @@ const LoginForm = (props) => {
         </div>
         <div>
             <Field component={Input} name="rememberMe" type="checkbox" /> Запомнить меня
-        </div>
-        {props.error && <div className={styles.formSummaryError}>
+        </div> 
+        {/* в уроке 90 эти филды зарефакторены в createField чтобы сократить код, я это не делал  */}
+        {error && <div className={styles.formSummaryError}>
             {/* встроенный обработчик ошибок редакс форм, заданный ранее как _error */}
-            {props.error}
+            {error}
         </div>}
         <div>
             <button>Войти</button>

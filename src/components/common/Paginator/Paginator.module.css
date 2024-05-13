@@ -1,0 +1,13 @@
+
+.selectedPage {
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    color: blue
+}
+
+.pageNumbers {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 300px;
+}

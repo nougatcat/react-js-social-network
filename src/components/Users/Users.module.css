@@ -3,17 +3,7 @@
     height: 100px;
     border-radius: 20%;
 }
-.selectedPage {
-    font-weight: bold;
-    cursor: pointer;
-    padding: 5px;
-    color: blue
-}
+
 .wrapper {
     font-size: 30px;
-}
-.pageNumbers {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    width: 300px;
 }
