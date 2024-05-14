@@ -1,23 +1,24 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
+//import DialogsContainer from './components/Dialogs/DialogsContainer'; //? перенес ниже - в lazy
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import LoginPage from './components/Login/Login';
 import React from 'react';
 import { connect } from 'react-redux';
-// import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
-// import { compose } from 'redux';
 import { initializeApp } from './redux/app-reducer';
 import Preloader from './components/common/Preloader/Preloader';
+// import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
+// import { compose } from 'redux';
 // export const withRouter = (Component) => {
 //     return (props) => {
 //         const match = { params: useParams() };
 //         return <Component match={match} {...props} />;
 //     };
 // };
+const DialogsContainer = React.lazy(() => import ('./components/Dialogs/DialogsContainer'))
 
 class App extends React.Component {
   componentDidMount() {
@@ -36,7 +37,9 @@ class App extends React.Component {
               <Route path='/profile' element={<ProfileContainer />}>
                 <Route path=':userId' element={<ProfileContainer />} />
               </Route>
-              <Route path='/dialogs' element={<DialogsContainer />} />
+              <Route path='/dialogs' element={
+                <React.Suspense fallback={<Preloader />}><DialogsContainer /></React.Suspense>} />
+                {/* Можно написать hoc, который будет помещать компоненту в саспенс с этим фоллбэк для сокращения кода и это будет выглядеть как withSuspense(DialogsContainer) (урок 94), необязательно */}
               <Route path='/users' element={<UsersContainer />} />
               <Route path='/login' element={<LoginPage />} />
             </Routes>
