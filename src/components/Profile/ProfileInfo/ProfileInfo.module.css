@@ -1,17 +1,26 @@
-/* 
-.Profile__image {
-    height: 500px;
-    width: 800px;
-} */
 
-/* .posts {
-} */
-/* .item {
-    color: greenyellow;
-}  */
 .description {
+    display: grid;
+    grid-template-areas: 'img info';
+    justify-content: flex-start;
     padding: 10px;
+    font-size: 20px;
+    .description__img{
+        padding-right: 20px;
+        .photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 20%;
+            grid-area: 'img';
+        }
+    }
+    .description__info {
+        grid-area: 'info'
+    }
 }
 .change__status {
     cursor:pointer; 
+}
+.status {
+    padding: 10px;
 }

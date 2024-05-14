@@ -22,4 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-*/api/api-key.js
+/src/api/api-key.js
+
+.vscode
