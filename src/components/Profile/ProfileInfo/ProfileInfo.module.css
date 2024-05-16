@@ -8,14 +8,19 @@
     .description__img{
         padding-right: 20px;
         .photo {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             border-radius: 20%;
             grid-area: 'img';
         }
     }
     .description__info {
-        grid-area: 'info'
+        grid-area: 'info';
+        .description__info__contacts {
+            border: dashed 1px;
+            background-color: rgb(204, 203, 255);
+            padding: 10px;
+        }
     }
 }
 .change__status {

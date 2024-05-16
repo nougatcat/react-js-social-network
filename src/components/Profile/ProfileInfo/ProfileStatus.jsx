@@ -1,7 +1,6 @@
 import css from './ProfileInfo.module.css'
-
 import React from "react";
-
+//!Больше не используется. Используется ProfileStatusWithHooks
 
 class ProfileStatus extends React.Component {
 

@@ -1,4 +1,5 @@
 
+import { Field } from 'redux-form';
 import styles from './FormControls.module.css';
 
 
@@ -22,4 +23,13 @@ export const Textarea = (props) => {
 export const Input = (props) => {
     const {input, meta, children, ...remainingProps} = props;
     return <FormControl {...props}><input {...input} {...remainingProps}/></FormControl>
+}
+
+export const createField = (placeholder, name, validators, component, props = {}, text = "") => {
+    return <div>
+        <Field placeholder={placeholder} name={name}
+                validate={validators}
+                component={component}
+                {...props} /> {text}
+    </div>
 }

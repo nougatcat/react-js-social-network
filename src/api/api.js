@@ -40,7 +40,7 @@ export const profileAPI = {
         return instance.get('profile/status/' + userId)
     },
     updateStatus(status) {
-        return instance.put('profile/status/', {status: status}) //отправляем на сервер объект со свойством status 
+        return instance.put('profile/status/', {status: status}) //?отправляем на сервер объект со свойством status 
     },
     savePhoto(photoFile) {
         const formData = new FormData()
@@ -50,6 +50,9 @@ export const profileAPI = {
                 'Content-Type' : 'multipart/form-data'
             }
         })
+    },
+    saveProfile(profile) {
+        return instance.put('profile', profile) //?отправляем на сервер объект структуры profile
     }
 }
 

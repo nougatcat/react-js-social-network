@@ -9,7 +9,7 @@ const ProfileStatusWithHooks = (props) => {
     let [status, setStatus] = useState(props.status) //при этом создастся локальная копия status и работать мы будем с ней, не трогая то, что пришло в пропс до тех пор, пока не вызовем updateStatus
 
     const activateEditMode = () => {
-        setEditMode(true)
+        if (props.isOwner) setEditMode(true)
     }
     const deactivateEditMode = () => {
         setEditMode(false)
