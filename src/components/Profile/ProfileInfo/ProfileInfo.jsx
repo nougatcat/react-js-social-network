@@ -9,8 +9,8 @@ const ProfileInfo = (props) => {
     let [editMode, setEditMode] = useState(false)
 
     if (!props.profile) { //если профиль = null or undefined
-        return <Preloader/>
-    } 
+        return <Preloader />
+    }
 
     const onMainPhotoSelected = (e) => {
         if (e.target.files.length) {
@@ -22,31 +22,32 @@ const ProfileInfo = (props) => {
             .then(() => {
                 setEditMode(false)
             })
-            .catch(error => '') //в случае когда сработает Promise.reject, не выполнится then, значит мы не выйдем из editMode. Promise.reject нужно отлавливать с помощью catch
+            .catch(error => '') //в случае когда сработает Promise.reject, не выполнится then
+        //, значит мы не выйдем из editMode. Promise.reject нужно отлавливать с помощью catch
     }
     return (
         <div>
             <div className={css.description}>
-                <div className={css.description__img}>
-                    <img alt='Ава не загрузилась' src={props.profile.photos.large != null ? props.profile.photos.large : userPhoto} className={css.photo}/>
-                    <div>{props.isOwner && <div>Загрузить фото:<br/><input type={'file'} onChange={onMainPhotoSelected} /></div>}</div>
+                <div className={css.description__img_and_status}>
+                    <img alt='Ава не загрузилась' src={props.profile.photos.large != null ? props.profile.photos.large : userPhoto} className={css.photo} />
+                    <div>{props.isOwner && <div>Загрузить фото:<br /><input type={'file'} onChange={onMainPhotoSelected} /></div>}</div>
+                    <strong><br />Статус:</strong>
+                    <div className={css.status}>
+                        <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner} />
+                    </div>
                 </div>
-                {editMode ? <ProfileDataForm initialValues={props.profile} onSubmit={onSubmit} profile={props.profile}  />
-                : <ProfileData profile={props.profile} isOwner={props.isOwner} 
-                    goToEditMode={() => {setEditMode(true)}}/>}
+                {editMode ? <ProfileDataForm initialValues={props.profile} onSubmit={onSubmit} profile={props.profile} />
+                    : <ProfileData profile={props.profile} isOwner={props.isOwner}
+                        goToEditMode={() => { setEditMode(true) }} />}
             </div>
-            <div className={css.status}>
-                <h3>Статус:</h3>
-                <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner}/>
-            </div>    
         </div>
     )
 }
 
-const Contact = ({contactTitle, contactValue}) => {
-    return <div>{contactTitle}: <a href={contactValue}>{contactValue}</a></div>
+const Contact = ({ contactTitle, contactValue }) => {
+    return <div>{contactTitle}: <a target='_blank' rel="noopener noreferrer" href={contactValue}>{contactValue}</a></div>
 }
-const ProfileData = ({profile, isOwner, goToEditMode}) => { //нужно указывать либо props, либо в {}. Иначе не работает нормально
+const ProfileData = ({ profile, isOwner, goToEditMode }) => { //нужно указывать либо props, либо в {}. Иначе не работает нормально
     return (
         <div className={css.description__info}>
             <div>Меня зовут <strong>{profile.fullName}</strong> | id: {profile.userId}</div>

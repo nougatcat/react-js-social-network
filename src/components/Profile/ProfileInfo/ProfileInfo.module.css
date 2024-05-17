@@ -3,15 +3,20 @@
     display: grid;
     grid-template-areas: 'img info';
     justify-content: flex-start;
+
     padding: 10px;
     font-size: 20px;
-    .description__img{
+    .description__img_and_status{
         padding-right: 20px;
         .photo {
             width: 250px;
             height: 250px;
             border-radius: 20%;
             grid-area: 'img';
+        }
+        .status {
+            width: 250px;
+            word-break: break-all;
         }
     }
     .description__info {
@@ -26,6 +31,6 @@
 .change__status {
     cursor:pointer; 
 }
-.status {
+/* .status {
     padding: 10px;
-}
+} */
