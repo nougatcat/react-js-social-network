@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 //import DialogsContainer from './components/Dialogs/DialogsContainer'; //? перенес ниже - в lazy
@@ -21,8 +21,17 @@ import Preloader from './components/common/Preloader/Preloader';
 const DialogsContainer = React.lazy(() => import ('./components/Dialogs/DialogsContainer'))
 
 class App extends React.Component {
+  catchAllUnhandledErrors = (promiseRejectionEvent) => {
+    alert('Какая-то ошибка. Смотри консоль')
+    console.error(promiseRejectionEvent)
+  }
   componentDidMount() {
     this.props.initializeApp();
+    //обработчик ошибок сервера
+    window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
   }
   render() {
     if (!this.props.initialized) return <Preloader />
@@ -33,7 +42,8 @@ class App extends React.Component {
           <HeaderContainer />
           <Navbar />
           <div className="app-wrapper-content"> {/* класс определяет основную грид арею */}
-            <Routes>
+            {/* <Routes> вместо устаревшего <Switch> */}
+            <Routes> 
               <Route path='/profile' element={<ProfileContainer />}>
                 <Route path=':userId' element={<ProfileContainer />} />
               </Route>
@@ -42,6 +52,9 @@ class App extends React.Component {
                 {/* Можно написать hoc, который будет помещать компоненту в саспенс с этим фоллбэк для сокращения кода и это будет выглядеть как withSuspense(DialogsContainer) (урок 94), необязательно */}
               <Route path='/users' element={<UsersContainer />} />
               <Route path='/login' element={<LoginPage />} />
+              {/* * - это любой другой адрес, который не прописан здесь */}
+              <Route path='*' element={<div><h1>404 NOT FOUND</h1></div>} />
+              <Route path="/" element={<Navigate to="/profile" />} />
             </Routes>
           </div>
         </div>

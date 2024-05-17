@@ -30,7 +30,7 @@ let User = ({ user, followingInProgress, follow, unfollow, isAuth }) => {
             <span>
                 <span>
                     <div>{user.name}</div>
-                    <div>{user.status}</div>
+                    <div className={styles.status}>{user.status}</div>
                 </span>
             </span>
         </div>

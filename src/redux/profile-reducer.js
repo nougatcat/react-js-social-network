@@ -82,6 +82,15 @@ export const updateStatus = (status) => async (dispatch) => {
         dispatch(setStatus(status));
     }
 }
+//?То же самое, но с обработкой ошибок сервера 
+// export const updateStatus = (status) => async (dispatch) => {
+//     try {
+//         const response = await profileAPI.updateStatus(status)
+//         if (response.data.resultCode === 0) {
+//             dispatch(setStatus(status));
+//         }   
+//     } catch(error) {что-то делаем если поймали ошибку}
+// }
 export const savePhoto = (file) => async (dispatch) => {
     const response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {

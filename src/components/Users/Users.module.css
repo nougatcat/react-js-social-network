@@ -7,3 +7,7 @@
 .wrapper {
     font-size: 30px;
 }
+
+.status {
+    word-break:break-all
+}
