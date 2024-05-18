@@ -9,7 +9,7 @@ import { follow, followSuccess, requestUsers, setCurrentPage, toggleFollowingPro
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
 import { compose } from 'redux';
-import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers } from '../../redux/users-selectors';
+import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from '../../redux/users-selectors';
 // import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 
@@ -33,7 +33,8 @@ let mapStateToProps = (state) => {
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
         followingInProgress: getFollowingInProgress(state),
-        isAuth: state.auth.isAuth
+        isAuth: state.auth.isAuth,
+        filter: getUsersFilter(state)
     }
 }
 
@@ -48,14 +49,17 @@ class UsersContainer extends React.Component {
 
     componentDidMount() { //сработает сразу после первой отрисовки рендером
         const {currentPage, pageSize} = this.props
-        this.props.requestUsers(currentPage,pageSize);
+        this.props.requestUsers(currentPage,pageSize, '');
     } //так как componentDidMount и onPageChanged здесь делают примерно одно и то же, я объединил все, что они делают, в одну функцию requestUsersThunkCreator
     onPageChanged = (pageNumber) => {
         //this.props.requestUsers(pageNumber,this.props.pageSize);
-        const {pageSize} = this.props //эти две строки аналогичны тому, что закомментировано сверху. Важно писать {}, иначе не будет корректно работать
-        this.props.requestUsers(pageNumber,pageSize);
+        const {pageSize, filter} = this.props //эти две строки аналогичны тому, что закомментировано сверху. Важно писать {}, иначе не будет корректно работать
+        this.props.requestUsers(pageNumber,pageSize,filter.term);
     }
-    
+    onFilterChanged = (filter) => {
+        const {currentPage, pageSize} = this.props
+        this.props.requestUsers(1,pageSize,filter.term)
+    }
 
 
 
@@ -69,6 +73,7 @@ class UsersContainer extends React.Component {
                     pageSize={this.props.pageSize}
                     currentPage={this.props.currentPage}
                     onPageChanged={this.onPageChanged}
+                    onFilterChanged={this.onFilterChanged}
                     users={this.props.users}
                     followSuccess={this.props.followSuccess}
                     unfollowSuccess={this.props.unfollowSuccess}

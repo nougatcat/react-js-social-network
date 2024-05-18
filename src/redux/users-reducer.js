@@ -8,6 +8,7 @@ const SET_CURRENT_PAGE = 'usersPage/SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'usersPage/SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_FETCHING = 'usersPage/TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'usersPage/TOGGLE_IS_FOLLOWING_PROGRES';
+const SET_FILTER = 'usersPage/SET_FILTER'
 
 
 let initialState = {
@@ -16,7 +17,11 @@ let initialState = {
     totalUsersCount: 0,
     currentPage: 1, //активная страница
     isFetching: false, //получаем данные с сервера?
-    followingInProgress: [] //для отслеживания нажатия кнопки follow на юзеров из массива
+    followingInProgress: [], //для отслеживания нажатия кнопки follow на юзеров из массива
+    filter: {
+        term: '',
+        //friend: null
+    }
 };
 
 const usersReduser = (state = initialState, action) => {
@@ -76,6 +81,13 @@ const usersReduser = (state = initialState, action) => {
                     : state.followingInProgress.filter(id => id !== action.userId)
             }
         }
+        case SET_FILTER: {
+            return {
+                ...state,
+                filter: action.payload
+            }
+
+        }
         default:
             return state;
     }
@@ -90,13 +102,16 @@ export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, curren
 export const setTotalUsersCount = (totalUsersCount) => ({ type: SET_TOTAL_USERS_COUNT, totalUsersCount });
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 export const toggleFollowingProgress = (isFetching, userId) => ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId })
+export const setFilter = (term) => ({type: SET_FILTER, payload: {term}})
 
 //? TC - thunk creator-ы
-export const requestUsers = (page, pageSize) => { //это thunk creator
+export const requestUsers = (page, pageSize, term) => { //это thunk creator
     return (dispatch) => { //это thunk
         dispatch(toggleIsFetching(true)); //помещаем прелоадер
         dispatch(setCurrentPage(page))
-        usersAPI.getUsers(page, pageSize).then(data => { //берем юзеров с учебного сайта
+        dispatch(setFilter(term))
+
+        usersAPI.getUsers(page, pageSize, term).then(data => { //берем юзеров с учебного сайта
             dispatch(toggleIsFetching(false)); //убираем прелоадер
             dispatch(setUsers(data.items));
             dispatch(setTotalUsersCount(data.totalCount));

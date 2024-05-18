@@ -22,3 +22,6 @@ export const getFollowingInProgress = (state) => {
 export const getUsers = createSelector(getUsersSelector, (users) => {//для примера реселекторов
     return users.filter(user => true) //filter бессмысленный тут, но нужен для примера реселекта
 })
+export const getUsersFilter = (state) => {
+    return state.usersPage.filter
+}

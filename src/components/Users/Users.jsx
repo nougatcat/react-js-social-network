@@ -2,11 +2,13 @@ import React from 'react';
 import styles from './Users.module.css';
 import Paginator from '../common/Paginator/Paginator';
 import User from './User';
+import UsersSearchForm from './UsersSearchForm';
 
 let Users = (props) => {
 
     return (
         <div className={styles.wrapper}>
+            <UsersSearchForm onFilterChanged={props.onFilterChanged} />
             <Paginator currentPage={props.currentPage}
                 onPageChanged={props.onPageChanged}
                 totalItemsCount={props.totalUsersCount}
