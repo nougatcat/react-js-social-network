@@ -20,7 +20,7 @@ let initialState = {
     followingInProgress: [], //для отслеживания нажатия кнопки follow на юзеров из массива
     filter: {
         term: '',
-        //friend: null
+        friend: null
     }
 };
 
@@ -102,16 +102,16 @@ export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, curren
 export const setTotalUsersCount = (totalUsersCount) => ({ type: SET_TOTAL_USERS_COUNT, totalUsersCount });
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 export const toggleFollowingProgress = (isFetching, userId) => ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId })
-export const setFilter = (term) => ({type: SET_FILTER, payload: {term}})
+export const setFilter = (filter) => ({type: SET_FILTER, payload: filter})
 
 //? TC - thunk creator-ы
-export const requestUsers = (page, pageSize, term) => { //это thunk creator
+export const requestUsers = (page, pageSize, filter) => { //это thunk creator
     return (dispatch) => { //это thunk
         dispatch(toggleIsFetching(true)); //помещаем прелоадер
         dispatch(setCurrentPage(page))
-        dispatch(setFilter(term))
+        dispatch(setFilter(filter))
 
-        usersAPI.getUsers(page, pageSize, term).then(data => { //берем юзеров с учебного сайта
+        usersAPI.getUsers(page, pageSize, filter.term, filter.friend).then(data => { //берем юзеров с учебного сайта
             dispatch(toggleIsFetching(false)); //убираем прелоадер
             dispatch(setUsers(data.items));
             dispatch(setTotalUsersCount(data.totalCount));
