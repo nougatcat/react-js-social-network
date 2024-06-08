@@ -14,3 +14,5 @@ root.render(
         </Provider>
     </React.StrictMode>
 ); 
+
+//? Ветка master будет зарефакторена под typescript
