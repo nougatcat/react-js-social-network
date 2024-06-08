@@ -14,3 +14,5 @@ root.render(
         </Provider>
     </React.StrictMode>
 ); 
+
+//? Ветка no_typescript не содержит файлов tsx. Это все уроки, кроме 92, 95 и 100+
