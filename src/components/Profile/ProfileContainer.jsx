@@ -2,7 +2,7 @@ import React from "react";
 import Profile from "./Profile";
 import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
-import { getStatus, getUserProfile, savePhoto, saveProfile, updateStatus } from '../../redux/profile-reducer';
+import { getStatus, getUserProfile, savePhoto, saveProfile, updateStatus } from '../../redux/profile-reducer.ts';
 import { compose } from "redux";
 import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";

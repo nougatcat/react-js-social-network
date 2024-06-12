@@ -1,5 +1,6 @@
 import { stopSubmit } from "redux-form";
 import { profileAPI } from "../api/api";
+import { PhotosType, PostType, ProfileType } from "../types/types";
 
 const ADD_POST = 'profilePage/ADD-POST'; //глобальная переменная типа для того, чтобы упростить (на самом деле это усложняет код)
 const SET_USER_PROFILE = 'profilePage/SET_USER_PROFILE';
@@ -7,16 +8,19 @@ const SET_STATUS = 'profilePage/SET_STATUS';
 const DELETE_POST = 'profilePage/DELETE_POST';
 const SAVE_PHOTO_SUCCESS = 'profilePage/SAVE_PHOTO_SUCCESS'
 
+
 let initialState = {
     posts: [
         { id: 1, message: 'Я что-то написал', likesCount: 2 },
         { id: 2, message: 'Привет мир', likesCount: 51 }
-    ],
-    profile: null,
-    status: ''
+    ] as Array<PostType>,
+    profile: null as ProfileType | null,
+    status: '',
+    // newPostText: ''
 } //значение по умолчанию
+export type InitialStateType = typeof initialState 
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = (state = initialState, action: any): InitialStateType => {
 
     switch (action.type) {
         case ADD_POST: {
@@ -28,6 +32,7 @@ const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 posts: [...state.posts, newPost], //пушим пост, но он удаляется после перезагрузки страницы, т.к. нет бэкенда (в файл state изменения не записываются)
+                // newPostText: ''
             };
         }
         case SET_USER_PROFILE: {
@@ -51,7 +56,7 @@ const profileReducer = (state = initialState, action) => {
         case SAVE_PHOTO_SUCCESS: {
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photos}
+                profile: {...state.profile, photos: action.photos} as ProfileType //! без as ProfileType ошибка потому что action any
             }
         }
         default:
@@ -59,24 +64,28 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const addPostActionCreator = (newPostElement) => ({type: ADD_POST, newPostElement}); //то же самое, что с ретурном
-export const setUserProfile = (profile) => ({type: SET_USER_PROFILE,profile})
-export const setStatus = (status) => ({type: SET_STATUS,status})
-export const savePhotoSuccess = (photos) => ({type: SAVE_PHOTO_SUCCESS,photos})
+type AddPostActionCreatorActionType = { type: typeof ADD_POST, newPostElement: string }
+export const addPostActionCreator = (newPostElement: string): AddPostActionCreatorActionType => ({type: ADD_POST, newPostElement}); //то же самое, что с ретурном
+type SetUserProfileActionType = { type: typeof SET_USER_PROFILE, profile: ProfileType }
+export const setUserProfile = (profile: ProfileType): SetUserProfileActionType  => ({type: SET_USER_PROFILE,profile})
+type SetStatusActionType = { type: typeof SET_STATUS, status: string}
+export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS,status})
+type SavePhotoSuccessActionType = { type: typeof SAVE_PHOTO_SUCCESS, photos: PhotosType}
+export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessActionType => ({type: SAVE_PHOTO_SUCCESS,photos})
 
 //? thunk creator
-export const getUserProfile = (userId) => async (dispatch) => {
+export const getUserProfile = (userId: number) => async (dispatch: any) => {
     const response = await profileAPI.getUserProfile(userId)
     dispatch(setUserProfile(response.data));
 } //специально рядом оставил async-await и обычный промис для наглядности (по сути одно и то же)
-export const getStatus = (userId) => {
-    return (dispatch) => {
+export const getStatus = (userId: number) => {
+    return (dispatch: any) => {
         profileAPI.getStatus(userId).then(response => {
             dispatch(setStatus(response.data));
         })
     }
 }
-export const updateStatus = (status) => async (dispatch) => {
+export const updateStatus = (status: string) => async (dispatch: any) => {
     const response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setStatus(status));
@@ -91,13 +100,13 @@ export const updateStatus = (status) => async (dispatch) => {
 //         }   
 //     } catch(error) {что-то делаем если поймали ошибку}
 // }
-export const savePhoto = (file) => async (dispatch) => {
+export const savePhoto = (file: any) => async (dispatch: any) => {
     const response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {
         dispatch(savePhotoSuccess(response.data.data.photos))
     }
 }
-export const saveProfile = (profile) => async (dispatch, getState) => {
+export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
     const userId = getState().auth.id
     const response = await profileAPI.saveProfile(profile)
     if (response.data.resultCode === 0) {
