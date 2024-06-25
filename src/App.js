@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import UsersContainer from './components/Users/UsersContainer';
+import UsersContainer from './components/Users/UsersContainer.tsx';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import LoginPage from './components/Login/Login';
@@ -42,7 +42,7 @@ class App extends React.Component {
               <Route path='/dialogs' element={
                 <React.Suspense fallback={<Preloader />}><DialogsContainer /></React.Suspense>} />
                 {/* Можно написать hoc, который будет помещать компоненту в саспенс с этим фоллбэк для сокращения кода и это будет выглядеть как withSuspense(DialogsContainer) (урок 94), необязательно */}
-              <Route path='/users' element={<UsersContainer />} />
+              <Route path='/users' element={<UsersContainer pageTitle={'Самураи'} />} />
               <Route path='/login' element={<LoginPage />} />
               {/* * - это любой другой адрес, который не прописан здесь */}
               <Route path='*' element={<div><h1>404 NOT FOUND</h1></div>} />

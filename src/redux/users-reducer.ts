@@ -14,7 +14,7 @@ const SET_FILTER = 'usersPage/SET_FILTER'
 
 type FilterType = {
     term: string | null
-    friend: number | null
+    friend: boolean | null
 }
 let initialState = {
     users: [] as Array<UserType>, //наполнится данными с сервера
@@ -110,7 +110,7 @@ type ToggleFollowingProgressActionType = { type: typeof TOGGLE_IS_FOLLOWING_PROG
 type SetFilterActionType = {type: typeof SET_FILTER, payload: FilterType}
 
 //? AC - action creator-ы 
-export const followSuccess = (userId: number): FollowSuccessActionType => { return ({ type: FOLLOW, userId }) };
+export const followSuccess = (userId: number): FollowSuccessActionType => { return ({ type: FOLLOW, userId }) }; //запись с ретурн аналогична записи со скобкой (строкой ниже)
 export const unfollowSuccess = (userId: number): UnfollowSuccessActionType => ({ type: UNFOLLOW, userId });
 export const setUsers = (users: Array<UserType>): SetUsersActionType => ({ type: SET_USERS, users });
 export const setCurrentPage = (currentPage: number): SetCurrentPageActionType => ({ type: SET_CURRENT_PAGE, currentPage });

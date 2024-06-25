@@ -1,8 +1,17 @@
 import css from './ProfileInfo.module.css'
-import React from "react";
+import React, { ChangeEvent } from "react";
 //!Больше не используется. Используется ProfileStatusWithHooks
+//!Файл остался для примера локального state и типов к нему
 
-class ProfileStatus extends React.Component {
+type PropsType = {
+    status: string
+    updateStatus: (newStatus: string) => void
+}
+type StateType = {
+    editMode: boolean
+    status: string
+}
+class ProfileStatus extends React.Component<PropsType, StateType> {
 
     //локальный state
     state = {
@@ -19,12 +28,12 @@ class ProfileStatus extends React.Component {
         this.setState( {editMode: false} )
         this.props.updateStatus(this.state.status) //статус из локального стейта передается в глобальный и на сервер
     }
-    onStatusChange = (event) => {
+    onStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState({
             status: event.currentTarget.value
         })
     }
-    componentDidUpdate(prevProps, prevState) { //prev - previous (до момента обновления)
+    componentDidUpdate(prevProps: PropsType, prevState: StateType) { //prev - previous (до момента обновления)
         if (prevProps.status !== this.props.status) { //синхронизация global state, чтобы не был пустой статус при редактировании
             this.setState({
                 status: this.props.status

@@ -1,10 +1,25 @@
 import React from 'react';
 import styles from './Users.module.css';
-import Paginator from '../common/Paginator/Paginator';
-import User from './User';
-import UsersSearchForm from './UsersSearchForm';
+import Paginator from '../common/Paginator/Paginator.tsx';
+import User from './User.jsx';
+import UsersSearchForm from './UsersSearchForm.jsx';
+import { UserType } from '../../types/types.ts';
 
-let Users = (props) => {
+type PropsType = {
+    currentPage: number
+    totalUsersCount: number
+    pageSize: number
+    onPageChanged: (pageNumber: number) => void
+    users: Array<UserType>
+    followingInProgress: Array<number>
+    unfollow: (id: number) => void
+    follow: (id: number) => void
+    isAuth: boolean
+    onFilterChanged: (filter: any) => void
+}
+
+
+let Users: React.FC<PropsType> = (props) => {
 
     return (
         <div className={styles.wrapper}>

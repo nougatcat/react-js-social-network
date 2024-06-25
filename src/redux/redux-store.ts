@@ -9,7 +9,7 @@ import {reducer as formReducer} from 'redux-form';
 import appReduser from "./app-reducer.ts";
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-let reducers = combineReducers({
+let rootReducer = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     sidebar: sidebarReducer,
@@ -19,10 +19,17 @@ let reducers = combineReducers({
     app: appReduser
 })
 
-let store = createStore(reducers, 
+type RootReducerType = typeof rootReducer // (globalState: AppStateType) => AppStateType
+export type AppStateType = ReturnType<RootReducerType>
+
+let state: AppStateType
+
+
+let store = createStore(rootReducer, 
     composeWithDevTools( applyMiddleware(thunkMiddleware))); 
     //!Если расширение выключено, то использование composeWithDevTools вызывает ошибку
 
+// @ts-ignore
 window.store = store; //для отладки делаем глобальную копию store
 
 export default store;
