@@ -1,5 +1,7 @@
 import { stopSubmit } from "redux-form";
 import { authAPI, securityAPI } from "../api/api";
+import { ThunkAction } from "redux-thunk";
+import { AppStateType } from "./redux-store";
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
 const GET_CAPTCHA_URL_SUCCESS = 'auth/GET_CAPTCHA_URL_SUCCESS';
@@ -14,7 +16,7 @@ let initialState  = {
 };
 export type InitialStateType = typeof initialState
 
-const authReduser = (state = initialState, action: any): InitialStateType  => {
+const authReduser = (state = initialState, action: ActionTypes): InitialStateType  => {
     switch (action.type) {
         case SET_USER_DATA:
         case GET_CAPTCHA_URL_SUCCESS: {
@@ -27,6 +29,9 @@ const authReduser = (state = initialState, action: any): InitialStateType  => {
             return state;
     }
 };
+
+
+type ActionTypes = SetAuthUserDataActionType | GetCapthcaUrlSuccessActionType
 
 type SetAuthUserDataActionPayloadType = {
     id: number | null
@@ -50,14 +55,20 @@ type GetCapthcaUrlSuccessActionType = {
 }
 const getCaptchaUrlSuccess = (captchaUrl: string): GetCapthcaUrlSuccessActionType => ({type: GET_CAPTCHA_URL_SUCCESS, payload: {captchaUrl}})
 
+
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
+
+
 //? thunk creator
-export const getAuthUserData = () => async (dispatch: any) => { //ретурн заменили на стрелку
+export const getAuthUserData = (): ThunkType => async (dispatch) => { //ретурн заменили на стрелку
     const data = await authAPI.me() //вместо обычного промиса пишем await функцию (более короткий код)
     if (data.resultCode === 0) {
         let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием
         dispatch(setAuthUserData(id, email, login, true));
     }
 }
+
+//!что делать с stopSubmit? Не могу типизировать возвращаемое значение
 export const login = (email: string, password: string, rememberMe: boolean, captcha: any) => async (dispatch: any) => {
     const response = await authAPI.login(email, password, rememberMe, captcha)
     if (response.data.resultCode === 0) {
@@ -72,13 +83,13 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
         //response.data.messages - это ошибки, которые посылает сервер
     }
 }
-export const logout = () => async (dispatch: any) => {
+export const logout = (): ThunkType => async (dispatch) => {
     const response = await authAPI.logout()
     if (response.data.resultCode === 0) {
         dispatch(setAuthUserData(null, null, null, false))
     }
 }
-export const getCaptchaUrl = () => async (dispatch: any) => {
+export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
     const response = await securityAPI.getCaptchaUrl()
     const captchaUrl = response.data.url
     dispatch(getCaptchaUrlSuccess(captchaUrl))

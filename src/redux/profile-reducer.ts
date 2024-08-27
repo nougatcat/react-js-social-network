@@ -1,6 +1,8 @@
 import { stopSubmit } from "redux-form";
 import { profileAPI } from "../api/api";
 import { PhotosType, PostType, ProfileType } from "../types/types";
+import { ThunkAction } from "redux-thunk";
+import { AppStateType } from "./redux-store";
 
 const ADD_POST = 'profilePage/ADD-POST'; //глобальная переменная типа для того, чтобы упростить (на самом деле это усложняет код)
 const SET_USER_PROFILE = 'profilePage/SET_USER_PROFILE';
@@ -20,7 +22,7 @@ let initialState = {
 } //значение по умолчанию
 export type InitialStateType = typeof initialState 
 
-const profileReducer = (state = initialState, action: any): InitialStateType => {
+const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
 
     switch (action.type) {
         case ADD_POST: {
@@ -47,12 +49,12 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
                 status: action.status
             }
         }
-        case DELETE_POST: {
-            return {
-                ...state,
-                posts: [...state.posts.filter(post => post.id !== action.postId)]
-            }
-        }
+        // case DELETE_POST: {
+        //     return {
+        //         ...state,
+        //         posts: [...state.posts.filter(post => post.id !== action.postId)]
+        //     }
+        // }
         case SAVE_PHOTO_SUCCESS: {
             return {
                 ...state,
@@ -64,6 +66,8 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
     }
 }
 
+type ActionTypes = AddPostActionCreatorActionType | SetUserProfileActionType | SetStatusActionType | SavePhotoSuccessActionType
+
 type AddPostActionCreatorActionType = { type: typeof ADD_POST, newPostElement: string }
 export const addPostActionCreator = (newPostElement: string): AddPostActionCreatorActionType => ({type: ADD_POST, newPostElement}); //то же самое, что с ретурном
 type SetUserProfileActionType = { type: typeof SET_USER_PROFILE, profile: ProfileType }
@@ -73,19 +77,21 @@ export const setStatus = (status: string): SetStatusActionType => ({type: SET_ST
 type SavePhotoSuccessActionType = { type: typeof SAVE_PHOTO_SUCCESS, photos: PhotosType}
 export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessActionType => ({type: SAVE_PHOTO_SUCCESS,photos})
 
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
+
 //? thunk creator
-export const getUserProfile = (userId: number) => async (dispatch: any) => {
+export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
     const response = await profileAPI.getUserProfile(userId)
     dispatch(setUserProfile(response.data));
 } //специально рядом оставил async-await и обычный промис для наглядности (по сути одно и то же)
-export const getStatus = (userId: number) => {
-    return (dispatch: any) => {
+export const getStatus = (userId: number): ThunkAction<void, AppStateType, unknown, ActionTypes> => {
+    return (dispatch) => {
         profileAPI.getStatus(userId).then(response => {
             dispatch(setStatus(response.data));
         })
     }
 }
-export const updateStatus = (status: string) => async (dispatch: any) => {
+export const updateStatus = (status: string): ThunkType => async (dispatch) => {
     const response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setStatus(status));
@@ -100,12 +106,13 @@ export const updateStatus = (status: string) => async (dispatch: any) => {
 //         }   
 //     } catch(error) {что-то делаем если поймали ошибку}
 // }
-export const savePhoto = (file: any) => async (dispatch: any) => {
+export const savePhoto = (file: any): ThunkType => async (dispatch) => {
     const response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {
         dispatch(savePhotoSuccess(response.data.data.photos))
     }
 }
+//!stopSubmit принадлежит redux-form. Пока не могу типизировать
 export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
     const userId = getState().auth.id
     const response = await profileAPI.saveProfile(profile)
