@@ -1,5 +1,5 @@
 import { stopSubmit } from "redux-form";
-import { authAPI, securityAPI } from "../api/api";
+import { authAPI, ResultCodesEnum, ResultCodesForCaptcha, securityAPI } from "../api/api.ts";
 import { ThunkAction } from "redux-thunk";
 import { AppStateType } from "./redux-store";
 
@@ -61,26 +61,26 @@ type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
 
 //? thunk creator
 export const getAuthUserData = (): ThunkType => async (dispatch) => { //ретурн заменили на стрелку
-    const data = await authAPI.me() //вместо обычного промиса пишем await функцию (более короткий код)
-    if (data.resultCode === 0) {
-        let { id, email, login } = data.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием
+    const meData = await authAPI.me() //вместо обычного промиса пишем await функцию (более короткий код)
+    if (meData.resultCode === ResultCodesEnum.Success) {
+        let { id, email, login } = meData.data; //первая data - представление данных в axios, вторая data - объект из API с таким названием
         dispatch(setAuthUserData(id, email, login, true));
     }
 }
 
 //!что делать с stopSubmit? Не могу типизировать возвращаемое значение
 export const login = (email: string, password: string, rememberMe: boolean, captcha: any) => async (dispatch: any) => {
-    const response = await authAPI.login(email, password, rememberMe, captcha)
-    if (response.data.resultCode === 0) {
+    const loginData = await authAPI.login(email, password, rememberMe, captcha)
+    if (loginData.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserData())
     }
     else {
-        if (response.data.resultCode === 10) {
+        if (loginData.resultCode === ResultCodesForCaptcha.CaptchaIsRequired) {
             dispatch(getCaptchaUrl())
         }
-        let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Неопознанная ошибка'
+        let message = loginData.messages.length > 0 ? loginData.messages[0] : 'Неопознанная ошибка'
         dispatch(stopSubmit("login", { _error: message }))
-        //response.data.messages - это ошибки, которые посылает сервер
+        //loginData.messages - это ошибки, которые посылает сервер
     }
 }
 export const logout = (): ThunkType => async (dispatch) => {
