@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { follow, followSuccess, requestUsers, setCurrentPage, toggleFollowingProgress, unfollow, unfollowSuccess } from '../../redux/users-reducer.ts';
+import { follow, requestUsers, unfollow } from '../../redux/users-reducer.ts';
 import Users from './Users.tsx';
 import Preloader from '../common/Preloader/Preloader.jsx';
 import { compose } from 'redux';
