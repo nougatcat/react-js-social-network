@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import UsersContainer from './components/Users/UsersContainer.tsx';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import LoginPage from './components/Login/Login';
+import LoginPage from './components/Login/Login.tsx';
 import React from 'react';
 import { connect } from 'react-redux';
 import { initializeApp } from './redux/app-reducer.ts';

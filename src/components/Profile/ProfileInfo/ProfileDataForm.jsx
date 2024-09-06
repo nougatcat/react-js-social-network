@@ -1,5 +1,5 @@
 import { reduxForm } from 'redux-form'
-import { Input, Textarea, createField } from '../../common/FormControls/FormControls'
+import { Input, Textarea, createField } from '../../common/FormControls/FormControls.tsx'
 import css from './ProfileInfo.module.css'
 import formCss from "./../../common/FormControls/FormControls.module.css";
 

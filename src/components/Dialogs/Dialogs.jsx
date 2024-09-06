@@ -4,8 +4,8 @@ import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import { Navigate } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
-import { Textarea } from '../common/FormControls/FormControls';
-import { maxLengthCreator, required } from '../../utilities/validators/validators';
+import { Textarea } from '../common/FormControls/FormControls.tsx';
+import { maxLengthCreator, required } from '../../utilities/validators/validators.ts';
 
 const maxLength50 = maxLengthCreator(50)
 
