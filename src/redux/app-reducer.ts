@@ -1,21 +1,22 @@
 import { ThunkAction } from "redux-thunk";
 import { getAuthUserData } from "./auth-reducer.ts";
-import { AppStateType } from "./redux-store.ts";
+import { AppStateType, InferActionsTypes } from "./redux-store.ts";
 
 
-const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
-
-export type InitialStateType = {
-    initialized: boolean
-}
-
-let initialState: InitialStateType = {
+let initialState = {
     initialized: false
 };
 
-const appReduser = (state = initialState, action: InitializedSuccessActionType): InitialStateType => {
+export const actions = {
+    initializedSuccess: () => ({ type: 'app/INITIALIZED_SUCCESS' } as const)
+}
+export type InitialStateType = typeof initialState
+type ActionsTypes = InferActionsTypes<typeof actions>
+
+
+const appReduser = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
-        case INITIALIZED_SUCCESS: {
+        case 'app/INITIALIZED_SUCCESS': {
             return {
                 ...state,
                 initialized: true
@@ -27,14 +28,10 @@ const appReduser = (state = initialState, action: InitializedSuccessActionType):
     }
 };
 
-type InitializedSuccessActionType = {
-    type: typeof INITIALIZED_SUCCESS
-}
-
-export const initializedSuccess = (): InitializedSuccessActionType  => ({ type: INITIALIZED_SUCCESS }); //: InitializedSuccessActionType значит, что функция обязательно должна вернуть INITIALIZED_SUCCESS
 
 
-type ThunkType = ThunkAction<void, AppStateType, unknown, InitializedSuccessActionType>
+
+type ThunkType = ThunkAction<void, AppStateType, unknown, ActionsTypes> //не так как по видео, сделал сам
 //? thunk creator
 export const initializeApp = (): ThunkType => {
     return (dispatch) => {
@@ -42,7 +39,7 @@ export const initializeApp = (): ThunkType => {
 
         Promise.all([promise])
             .then(() => {
-                dispatch(initializedSuccess());
+                dispatch(actions.initializedSuccess());
             })
     }
 }

@@ -1,9 +1,10 @@
 import { Dispatch } from "redux";
-import { usersAPI } from "../api/api.ts";
+import { usersAPI } from '../api/usersAPI.ts';
 import { UserType } from "../types/types";
-import { updateObjectInArray } from "../utilities/object-helpers";
-import { AppStateType, InferActionsTypes } from "./redux-store";
-import { ThunkAction } from "redux-thunk";
+import { updateObjectInArray } from "../utilities/object-helpers.ts";
+import { AppStateType, BaseThunkType, InferActionsTypes } from "./redux-store";
+import { ResultCodesEnum } from "../api/api.ts";
+// import { ThunkAction } from "redux-thunk";
 
 type FilterType = {
     term: string | null
@@ -21,48 +22,48 @@ let initialState = {
         friend: null
     } as FilterType
 };
-type InitialStateActionType = typeof initialState
+
 
 const usersReduser = (state = initialState, action: ActionsTypes): InitialStateActionType => {
     switch (action.type) {
          //?updateObjectInArray - хелпер, который маппит массив, вынесет, чтобы не писать два раза
-        case 'FOLLOW': {
+        case 'usersPage/FOLLOW': {
             return {
                 ...state,
                 users: updateObjectInArray(state.users, action.userId, "id", {followed: true})
             };
         }
-        case 'UNFOLLOW': {
+        case 'usersPage/UNFOLLOW': {
             return {
                 ...state,
                 users: updateObjectInArray(state.users, action.userId, "id", {followed: false})
             };
         }
-        case 'SET_USERS': { //обновление списка пользователей
+        case 'usersPage/SET_USERS': { //обновление списка пользователей
             return {
                 ...state,
                 users: action.users
             }
         }
-        case 'SET_CURRENT_PAGE': {
+        case 'usersPage/SET_CURRENT_PAGE': {
             return {
                 ...state,
                 currentPage: action.currentPage
             }
         }
-        case 'SET_TOTAL_USERS_COUNT': {
+        case 'usersPage/SET_TOTAL_USERS_COUNT': {
             return {
                 ...state,
                 totalUsersCount: action.totalUsersCount
             }
         }
-        case 'TOGGLE_IS_FETCHING': {
+        case 'usersPage/TOGGLE_IS_FETCHING': {
             return {
                 ...state,
                 isFetching: action.isFetching
             }
         }
-        case 'TOGGLE_IS_FOLLOWING_PROGRESS': {
+        case 'usersPage/TOGGLE_IS_FOLLOWING_PROGRESS': {
             return {
                 ...state,
                 followingInProgress: action.isFetching
@@ -70,7 +71,7 @@ const usersReduser = (state = initialState, action: ActionsTypes): InitialStateA
                     : state.followingInProgress.filter(id => id !== action.userId)
             }
         }
-        case 'SET_FILTER': {
+        case 'usersPage/SET_FILTER': {
             return {
                 ...state,
                 filter: action.payload
@@ -84,23 +85,22 @@ const usersReduser = (state = initialState, action: ActionsTypes): InitialStateA
 
 export const actions = {
     //? AC - action creator-ы 
-    followSuccess: (userId: number) => { return ({ type: 'FOLLOW', userId } as const) }, //запись с ретурн аналогична записи со скобкой (строкой ниже)
-    unfollowSuccess: (userId: number) => ({ type: 'UNFOLLOW', userId } as const),
-    setUsers: (users: Array<UserType>) => ({ type: 'SET_USERS', users } as const),
-    setCurrentPage: (currentPage: number) => ({ type: 'SET_CURRENT_PAGE', currentPage } as const),
-    setTotalUsersCount: (totalUsersCount: number) => ({ type: 'SET_TOTAL_USERS_COUNT', totalUsersCount } as const),
-    toggleIsFetching: (isFetching: boolean) => ({ type: 'TOGGLE_IS_FETCHING', isFetching } as const),
-    toggleFollowingProgress: (isFetching: boolean, userId: number) => ({ type: 'TOGGLE_IS_FOLLOWING_PROGRESS', isFetching, userId } as const),
-    setFilter: (filter: FilterType) => ({ type: 'SET_FILTER', payload: filter } as const)
+    followSuccess: (userId: number) => { return ({ type: 'usersPage/FOLLOW', userId } as const) }, //запись с ретурн аналогична записи со скобкой (строкой ниже)
+    unfollowSuccess: (userId: number) => ({ type: 'usersPage/UNFOLLOW', userId } as const),
+    setUsers: (users: Array<UserType>) => ({ type: 'usersPage/SET_USERS', users } as const),
+    setCurrentPage: (currentPage: number) => ({ type: 'usersPage/SET_CURRENT_PAGE', currentPage } as const),
+    setTotalUsersCount: (totalUsersCount: number) => ({ type: 'usersPage/SET_TOTAL_USERS_COUNT', totalUsersCount } as const),
+    toggleIsFetching: (isFetching: boolean) => ({ type: 'usersPage/TOGGLE_IS_FETCHING', isFetching } as const),
+    toggleFollowingProgress: (isFetching: boolean, userId: number) => ({ type: 'usersPage/TOGGLE_IS_FOLLOWING_PROGRESS', isFetching, userId } as const),
+    setFilter: (filter: FilterType) => ({ type: 'usersPage/SET_FILTER', payload: filter } as const)
 }
 
-type ActionsTypes = InferActionsTypes<typeof actions>
-//! Сократить типизацию можно также и в других редюсерах (ДЗ), по аналогии с уроком 109
 
 
-type GetStateType = () => AppStateType //необязательно выносить это, можно просто писать getState: () => AppStatetype
-type DispatchType = Dispatch<ActionsTypes> //аналогично, необязательный код
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+
+// type GetStateType = () => AppStateType //необязательно выносить это, можно просто писать getState: () => AppStatetype
+//type DispatchType = Dispatch<ActionsTypes> //нужно для более сложного метода типизации thunk (отсавил для примера) (без использования ThunkType). Смотри _followUnfollowFlow
+
 
 //? TC - thunk creator-ы
 //ThunkAction<ReturnType, StateType, ExtraPayload, Action>
@@ -119,10 +119,13 @@ export const requestUsers = (page: number, pageSize: number, filter: any): Thunk
     }
 }
 //? на случай, если юзер не авторизован, кнопки follow и unfollow скрыты в ui
-const _followUnfollowFlow = async (dispatch: DispatchType, userId: number, apiMethod: any, actionCreator: (userId: number) => ActionsTypes) => {
+const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>, 
+                                    userId: number, 
+                                    apiMethod: any, 
+                                    actionCreator: (userId: number) => ActionsTypes) => {
     dispatch(actions.toggleFollowingProgress(true, userId))
     const response = await apiMethod(userId)
-    if (response.data.resultCode === 0) { //код 0 - сервер не вернул ошибку
+    if (response.data.resultCode === ResultCodesEnum.Success) {
         dispatch(actionCreator(userId))
     }
     dispatch(actions.toggleFollowingProgress(false, userId));
@@ -140,5 +143,9 @@ export const unfollow = (userId: number): ThunkType => {
 }
 
 
+type InitialStateActionType = typeof initialState
+type ActionsTypes = InferActionsTypes<typeof actions>
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+type ThunkType = BaseThunkType<ActionsTypes> //вынесли конструкцию в redux-store
 
 export default usersReduser;

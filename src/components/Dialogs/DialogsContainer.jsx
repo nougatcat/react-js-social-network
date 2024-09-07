@@ -1,6 +1,6 @@
 // import React from 'react';
 
-import { sendMessageCreator } from '../../redux/dialogs-reducer.ts';
+import { actions } from '../../redux/dialogs-reducer.ts';
 import Dialogs from './Dialogs';
 import { connect } from 'react-redux';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
@@ -16,7 +16,7 @@ let mapStateToProps = (state) => { //данные из state
 let mapDispatchToProps = (dispatch) => { //коллбеки, которые отпраятся в презентационную компоненту
     return {
         onSendMessageClick: (newMessageBody) => {
-            dispatch(sendMessageCreator(newMessageBody));
+            dispatch(actions.sendMessageCreator(newMessageBody));
         }
     }
 }

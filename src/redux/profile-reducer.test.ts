@@ -1,4 +1,4 @@
-import profileReducer, { addPostActionCreator, deletePost } from "./profile-reducer";
+import profileReducer, { actions } from "./profile-reducer";
 
 let state = {
     posts : [
@@ -7,11 +7,12 @@ let state = {
     ],
     profile: null,
     status: ''
+    // newPostText: ''
 }
 
 it('amount of posts should be increasing',() => {
     //1. test data
-    let action = addPostActionCreator('hello world')
+    let action = actions.addPostActionCreator('hello world')
     //2. action
     let newState = profileReducer(state,action)
     //3. expectation
@@ -19,7 +20,7 @@ it('amount of posts should be increasing',() => {
 })
 it('new message should be correct',() => {
     //1. test data
-    let action = addPostActionCreator('hello world')
+    let action = actions.addPostActionCreator('hello world')
     //2. action
     let newState = profileReducer(state,action)
     //3. expectation
@@ -27,7 +28,7 @@ it('new message should be correct',() => {
 })
 it('deleting post should decrease amount of posts',() => {
     //1. test data
-    let action = deletePost(1)
+    let action = actions.deletePost(1)
     //2. action
     let newState = profileReducer(state,action)
     //3. expectation
@@ -35,7 +36,7 @@ it('deleting post should decrease amount of posts',() => {
 })
 it('deleting post should decrease amount of posts if id is incorrect',() => {
     //1. test data
-    let action = deletePost(5)
+    let action = actions.deletePost(5)
     //2. action
     let newState = profileReducer(state,action)
     //3. expectation

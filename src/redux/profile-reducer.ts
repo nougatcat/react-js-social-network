@@ -1,14 +1,9 @@
 import { stopSubmit } from "redux-form";
-import { profileAPI } from "../api/api.ts";
+import { profileAPI } from "../api/profileAPI.ts";
 import { PhotosType, PostType, ProfileType } from "../types/types";
 import { ThunkAction } from "redux-thunk";
-import { AppStateType } from "./redux-store";
-
-const ADD_POST = 'profilePage/ADD-POST'; //глобальная переменная типа для того, чтобы упростить (на самом деле это усложняет код)
-const SET_USER_PROFILE = 'profilePage/SET_USER_PROFILE';
-const SET_STATUS = 'profilePage/SET_STATUS';
-const DELETE_POST = 'profilePage/DELETE_POST';
-const SAVE_PHOTO_SUCCESS = 'profilePage/SAVE_PHOTO_SUCCESS'
+import { AppStateType, BaseThunkType, InferActionsTypes } from "./redux-store";
+import { ResultCodesEnum } from "../api/api.ts";
 
 
 let initialState = {
@@ -18,14 +13,13 @@ let initialState = {
     ] as Array<PostType>,
     profile: null as ProfileType | null,
     status: '',
-    // newPostText: ''
+    // newPostText: '' // больше не используется
 } //значение по умолчанию
-export type InitialStateType = typeof initialState 
 
-const profileReducer = (state = initialState, action: ActionTypes): InitialStateType => {
+const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 
     switch (action.type) {
-        case ADD_POST: {
+        case "profilePage/ADD-POST": {
             let newPost = {
                 id: 5,
                 message: action.newPostElement,
@@ -37,28 +31,28 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
                 // newPostText: ''
             };
         }
-        case SET_USER_PROFILE: {
+        case "profilePage/SET_USER_PROFILE": {
             return {
                 ...state,
                 profile: action.profile
             }
         }
-        case SET_STATUS: {
+        case "profilePage/SET_STATUS": {
             return {
                 ...state,
                 status: action.status
             }
         }
-        // case DELETE_POST: {
-        //     return {
-        //         ...state,
-        //         posts: [...state.posts.filter(post => post.id !== action.postId)]
-        //     }
-        // }
-        case SAVE_PHOTO_SUCCESS: {
+        case "profilePage/DELETE_POST": {
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photos} as ProfileType //! без as ProfileType ошибка потому что action any
+                posts: [...state.posts.filter(post => post.id !== action.postId)]
+            }
+        }
+        case "profilePage/SAVE_PHOTO_SUCCESS": {
+            return {
+                ...state,
+                profile: {...state.profile, photos: action.photos} as ProfileType //! без as ProfileType ошибка
             }
         }
         default:
@@ -66,64 +60,54 @@ const profileReducer = (state = initialState, action: ActionTypes): InitialState
     }
 }
 
-type ActionTypes = AddPostActionCreatorActionType | SetUserProfileActionType | SetStatusActionType | SavePhotoSuccessActionType
+export const actions = {
+    addPostActionCreator : (newPostElement: string) => ({type: 'profilePage/ADD-POST', newPostElement} as const), //то же самое, что с ретурном
+    setUserProfile : (profile: ProfileType)  => ({type: 'profilePage/SET_USER_PROFILE',profile} as const),
+    setStatus : (status: string) => ({type: 'profilePage/SET_STATUS',status} as const),
+    deletePost : (postId: Number) => ({type: 'profilePage/DELETE_POST',postId} as const),
+    savePhotoSuccess : (photos: PhotosType) => ({type: 'profilePage/SAVE_PHOTO_SUCCESS',photos} as const)
+}
 
-type AddPostActionCreatorActionType = { type: typeof ADD_POST, newPostElement: string }
-export const addPostActionCreator = (newPostElement: string): AddPostActionCreatorActionType => ({type: ADD_POST, newPostElement}); //то же самое, что с ретурном
-type SetUserProfileActionType = { type: typeof SET_USER_PROFILE, profile: ProfileType }
-export const setUserProfile = (profile: ProfileType): SetUserProfileActionType  => ({type: SET_USER_PROFILE,profile})
-type SetStatusActionType = { type: typeof SET_STATUS, status: string}
-export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS,status})
-type SavePhotoSuccessActionType = { type: typeof SAVE_PHOTO_SUCCESS, photos: PhotosType}
-export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessActionType => ({type: SAVE_PHOTO_SUCCESS,photos})
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionTypes>
+
 
 //? thunk creator
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
-    const response = await profileAPI.getUserProfile(userId)
-    dispatch(setUserProfile(response.data));
-} //специально рядом оставил async-await и обычный промис для наглядности (по сути одно и то же)
-export const getStatus = (userId: number): ThunkAction<void, AppStateType, unknown, ActionTypes> => {
-    return (dispatch) => {
-        profileAPI.getStatus(userId).then(response => {
-            dispatch(setStatus(response.data));
-        })
-    }
+    const data = await profileAPI.getUserProfile(userId)
+    dispatch(actions.setUserProfile(data));
+}
+export const getStatus = (userId: number): ThunkAction<void, AppStateType, unknown, ActionsTypes> => async (dispatch) => {
+    let data = await profileAPI.getStatus(userId)
+    dispatch(actions.setStatus(data))
 }
 export const updateStatus = (status: string): ThunkType => async (dispatch) => {
-    const response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) {
-        dispatch(setStatus(status));
+    const data = await profileAPI.updateStatus(status)
+    if (data.resultCode === ResultCodesEnum.Success) {
+        dispatch(actions.setStatus(status));
     }
 }
-//?То же самое, но с обработкой ошибок сервера 
-// export const updateStatus = (status) => async (dispatch) => {
-//     try {
-//         const response = await profileAPI.updateStatus(status)
-//         if (response.data.resultCode === 0) {
-//             dispatch(setStatus(status));
-//         }   
-//     } catch(error) {что-то делаем если поймали ошибку}
-// }
-export const savePhoto = (file: any): ThunkType => async (dispatch) => {
-    const response = await profileAPI.savePhoto(file)
-    if (response.data.resultCode === 0) {
-        dispatch(savePhotoSuccess(response.data.data.photos))
-    }
-}
-//!stopSubmit принадлежит redux-form. Пока не могу типизировать
-export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
-    const userId = getState().auth.id
-    const response = await profileAPI.saveProfile(profile)
-    if (response.data.resultCode === 0) {
-        dispatch(getUserProfile(userId))
-    } else {
-        //dispatch(stopSubmit('edit-profile', {"contacts": {'facebook': response.data.messages[0]}})) //если распарсить ответы сервера, то можно будет таким образом сопоставлять ошибку и конкретный импут
-        dispatch(stopSubmit('edit-profile', {_error: response.data.messages[0]}))
-        return Promise.reject(response.data.messages[0])
+export const savePhoto = (file: File): ThunkType => async (dispatch) => {
+    const data = await profileAPI.savePhoto(file)
+    if (data.resultCode === ResultCodesEnum.Success) {
+        dispatch(actions.savePhotoSuccess(data.data.photos))
     }
 }
 
+export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
+    const userId = getState().auth.id
+    const data = await profileAPI.saveProfile(profile)
+    if (data.resultCode === ResultCodesEnum.Success) {
+        if (userId != null) dispatch(getUserProfile(userId))
+        else throw new Error('userId cannot be null')
+    } else {
+        //dispatch(stopSubmit('edit-profile', {"contacts": {'facebook': response.data.messages[0]}})) //если распарсить ответы сервера, то можно будет таким образом сопоставлять ошибку и конкретный импут
+        dispatch(stopSubmit('edit-profile', {_error: data.messages[0]}))
+        return Promise.reject(data.messages[0])
+    }
+}
+
+export type InitialStateType = typeof initialState 
+type ActionsTypes = InferActionsTypes<typeof actions>
+type ThunkType = BaseThunkType<ActionsTypes | ReturnType< typeof stopSubmit >>
 
 export default profileReducer;
