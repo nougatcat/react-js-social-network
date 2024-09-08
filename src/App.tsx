@@ -1,30 +1,35 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Navbar from './components/Navbar/Navbar';
+import Navbar from './components/Navbar/Navbar.jsx';
 import UsersContainer from './components/Users/UsersContainer.tsx';
-import ProfileContainer from './components/Profile/ProfileContainer';
-import HeaderContainer from './components/Header/HeaderContainer';
+import ProfileContainer from './components/Profile/ProfileContainer.jsx';
+import HeaderContainer from './components/Header/HeaderContainer.jsx';
 import LoginPage from './components/Login/Login.tsx';
 import React from 'react';
 import { connect } from 'react-redux';
 import { initializeApp } from './redux/app-reducer.ts';
-import Preloader from './components/common/Preloader/Preloader';
+import Preloader from './components/common/Preloader/Preloader.jsx';
 
-const DialogsContainer = React.lazy(() => import ('./components/Dialogs/DialogsContainer'))
+const DialogsContainer = React.lazy(() => import ('./components/Dialogs/DialogsContainer.tsx'))
 
-class App extends React.Component {
-  // catchAllUnhandledErrors = (promiseRejectionEvent) => {
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = {
+  initializeApp: () => void
+}
+
+class App extends React.Component<MapPropsType & DispatchPropsType> {
+  // catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
   //   alert('Какая-то ошибка. Смотри консоль')
   //   console.error(promiseRejectionEvent)
   // }
   componentDidMount() {
     this.props.initializeApp();
     //обработчик ошибок сервера
-    window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+    // window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
   }
-  componentWillUnmount() {
-    window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+  // }
   render() {
     if (!this.props.initialized) return <Preloader />
     return ( //возвращаем jsx разметку с другими компонентами

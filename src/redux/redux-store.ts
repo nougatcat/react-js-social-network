@@ -23,8 +23,12 @@ type RootReducerType = typeof rootReducer // (globalState: AppStateType) => AppS
 export type AppStateType = ReturnType<RootReducerType>
 
 // let state: AppStateType
-type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
-export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>
+
+
+//type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
+// export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>
+export type InferActionsTypes<T> = T extends {[key: string]: (...args: any[]) => infer U} ? U : never //укороченная запись вместо закоментированных двух строчек, что выше
+
 export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A> //по умолчанию может использовать любые экшены
 
 let store = createStore(rootReducer, 
