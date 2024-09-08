@@ -46,7 +46,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               </Route>
               <Route path='/dialogs' element={
                 <React.Suspense fallback={<Preloader />}><DialogsContainer /></React.Suspense>} />
-                {/* Можно написать hoc, который будет помещать компоненту в саспенс с этим фоллбэк для сокращения кода и это будет выглядеть как withSuspense(DialogsContainer) (урок 94), необязательно */}
+                {/* Можно написать hoc, который будет помещать компоненту в саспенс с этим фоллбэк для сокращения кода и это будет выглядеть как withSuspense(DialogsContainer) (урок 94/111), необязательно */}
               <Route path='/users' element={<UsersContainer pageTitle={'Самураи'} />} />
               <Route path='/login' element={<LoginPage />} />
               {/* * - это любой другой адрес, который не прописан здесь */}

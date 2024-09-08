@@ -3,7 +3,7 @@
 import { actions } from '../../redux/dialogs-reducer.ts';
 import Dialogs from './Dialogs.tsx';
 import { connect } from 'react-redux';
-import { withAuthRedirect } from '../../hoc/withAuthRedirect.js';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect.tsx';
 import { compose } from 'redux';
 import { AppStateType } from '../../redux/redux-store.ts';
 

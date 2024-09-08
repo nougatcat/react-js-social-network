@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getStatus, getUserProfile, savePhoto, saveProfile, updateStatus } from '../../redux/profile-reducer.ts';
 import { compose } from "redux";
 import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
-import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect.tsx";
 export const withRouter = (Component) => {
     return (props) => {
         const match = { params: useParams() };
