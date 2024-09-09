@@ -22,7 +22,7 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
         case "profilePage/ADD-POST": {
             let newPost = {
                 id: 5,
-                message: action.newPostElement,
+                message: action.newPostText,
                 likesCount: 0
             };
             return {
@@ -61,7 +61,7 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
 }
 
 export const actions = {
-    addPostActionCreator : (newPostElement: string) => ({type: 'profilePage/ADD-POST', newPostElement} as const), //то же самое, что с ретурном
+    addPostActionCreator : (newPostText: string) => ({type: 'profilePage/ADD-POST', newPostText} as const), //то же самое, что с ретурном
     setUserProfile : (profile: ProfileType)  => ({type: 'profilePage/SET_USER_PROFILE',profile} as const),
     setStatus : (status: string) => ({type: 'profilePage/SET_STATUS',status} as const),
     deletePost : (postId: Number) => ({type: 'profilePage/DELETE_POST',postId} as const),

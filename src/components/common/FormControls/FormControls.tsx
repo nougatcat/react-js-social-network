@@ -58,6 +58,8 @@ export function createField<FormKeysType extends string>(placeholder: string | u
     </div>
 }
 
+export type GetStringKeys<T> = Extract<keyof T, string>
+
 
 // export const createField = (placeholder: string | undefined, name: LoginFormValuesTypeKeys, 
 //                             validators: Array<FieldValidatorType>, 

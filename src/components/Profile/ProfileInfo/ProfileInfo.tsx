@@ -1,23 +1,33 @@
 import Preloader from '../../common/Preloader/Preloader';
 import css from './ProfileInfo.module.css'
 import userPhoto from '../../../assets/images/user.png';
-import ProfileStatusWithHooks from './ProfileStatusWithHooks';
-import { useState } from 'react';
-import ProfileDataForm from './ProfileDataForm';
+import ProfileStatusWithHooks from './ProfileStatusWithHooks.tsx';
+import React, { ChangeEvent, useState } from 'react';
+import ProfileDataForm from './ProfileDataForm.tsx';
+import { ContanctsType, ProfileType } from '../../../types/types.ts';
 
-const ProfileInfo = (props) => {
+type PropsType = {
+    profile: ProfileType | null 
+    status: string
+    updateStatus: (status: string) => void
+    isOwner: boolean
+    savePhoto: (file: File) => void
+    saveProfile: (profile: ProfileType) => Promise<any>
+}
+
+const ProfileInfo: React.FC<PropsType> = (props) => {
     let [editMode, setEditMode] = useState(false)
 
     if (!props.profile) { //если профиль = null or undefined
         return <Preloader />
     }
 
-    const onMainPhotoSelected = (e) => {
-        if (e.target.files.length) {
+    const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) { //?Если есть e.target.files, то взять из него длину. Аналог e.target.files && e.target.files.length
             props.savePhoto(e.target.files[0])
         }
     }
-    const onSubmit = (formData) => {
+    const onSubmit = (formData: ProfileType) => {
         props.saveProfile(formData)
             .then(() => {
                 setEditMode(false)
@@ -44,10 +54,20 @@ const ProfileInfo = (props) => {
     )
 }
 
-const Contact = ({ contactTitle, contactValue }) => {
+
+type ContactsPropsType = {
+    contactTitle: string
+    contactValue: string
+}
+const Contact: React.FC<ContactsPropsType> = ({ contactTitle, contactValue }) => {
     return <div>{contactTitle}: <a target='_blank' rel="noopener noreferrer" href={contactValue}>{contactValue}</a></div>
 }
-const ProfileData = ({ profile, isOwner, goToEditMode }) => { //нужно указывать либо props, либо в {}. Иначе не работает нормально
+type ProfileDataPropsType = {
+    profile: ProfileType
+    isOwner: boolean
+    goToEditMode: () => void
+}
+const ProfileData: React.FC<ProfileDataPropsType> = ({ profile, isOwner, goToEditMode }) => { //нужно указывать либо props, либо в {}. Иначе не работает нормально
     return (
         <div className={css.description__info}>
             <div>Меня зовут <strong>{profile.fullName}</strong> | id: {profile.userId}</div>
@@ -57,7 +77,7 @@ const ProfileData = ({ profile, isOwner, goToEditMode }) => { //нужно ук�
             <div className={css.description__info__contacts}>
                 <div><b>Контакты</b></div>
                 {Object.keys(profile.contacts).map(key => {
-                    return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
+                    return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key as keyof ContanctsType]} />
                 })}
             </div>
             {isOwner && <div><button onClick={goToEditMode}>Редактировать</button></div>}

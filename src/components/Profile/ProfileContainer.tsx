@@ -1,11 +1,13 @@
 import React from "react";
-import Profile from "./Profile";
+import Profile from "./Profile.tsx";
 import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import { getStatus, getUserProfile, savePhoto, saveProfile, updateStatus } from '../../redux/profile-reducer.ts';
 import { compose } from "redux";
 import { useParams } from "react-router"; //делаем обертку для хука, чтобы использовать аналог withRouter
 import { withAuthRedirect } from "../../hoc/withAuthRedirect.tsx";
+import { AppStateType } from "../../redux/redux-store.ts";
+import { ProfileType } from "../../types/types.ts";
 export const withRouter = (Component) => {
     return (props) => {
         const match = { params: useParams() };
@@ -13,15 +15,30 @@ export const withRouter = (Component) => {
     };
 };
 
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = {
+    getUserProfile: (userId: number) => void
+    getStatus: (userId: number) => void
+    updateStatus : (status: string) => void
+    savePhoto : (file: File) => void
+    saveProfile: (profile: ProfileType) => Promise<any>
+}
 
-class ProfileContainer extends React.Component {
+type PropsType = MapPropsType & DispatchPropsType
+
+class ProfileContainer extends React.Component<PropsType> { //withRouter не типизирован, ругается на match
     requestProfile() { //покажет страницу profile/id
         let userId = this.props.match.params.userId;
         if (!userId) {//для страницы /profile без id 
             userId = this.props.id;
         }
-        this.props.getUserProfile(userId);
-        this.props.getStatus(userId);
+        if (!userId) {
+            console.error('id should exist in URI params or in state (authorizedUserId)')
+        } else {
+            this.props.getUserProfile(userId);
+            this.props.getStatus(userId);
+        }
+
     }
     componentDidMount() {
         this.requestProfile()
@@ -29,7 +46,7 @@ class ProfileContainer extends React.Component {
     // componentDidUpdate() { //!начнет бесконечно слать запросы на сервер, не использовать
     //     this.requestProfile()
     // }
-    componentDidUpdate(prevProps) { //нужно чтобы при переходе на /profile без id перекидывало на мой профиль без перезагрузки страницы
+    componentDidUpdate(prevProps: PropsType) { //нужно чтобы при переходе на /profile без id перекидывало на мой профиль без перезагрузки страницы
         if (this.props.match.params.userId !== prevProps.match.params.userId) {
             this.requestProfile()
         }
@@ -48,7 +65,7 @@ class ProfileContainer extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => ({ 
+let mapStateToProps = (state: AppStateType) => ({ 
     profile: state.profilePage.profile,
     status: state.profilePage.status,
     id: state.auth.id,
@@ -57,7 +74,7 @@ let mapStateToProps = (state) => ({
 });
 
 
-export default compose(
+export default compose<React.ComponentType>(
     connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto, saveProfile }),
     withRouter,
     withAuthRedirect

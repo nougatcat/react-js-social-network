@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar.jsx';
 import UsersContainer from './components/Users/UsersContainer.tsx';
-import ProfileContainer from './components/Profile/ProfileContainer.jsx';
+import ProfileContainer from './components/Profile/ProfileContainer.tsx';
 import HeaderContainer from './components/Header/HeaderContainer.jsx';
 import LoginPage from './components/Login/Login.tsx';
 import React from 'react';

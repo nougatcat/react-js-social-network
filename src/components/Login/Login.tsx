@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
-import { Input, createField } from "../common/FormControls/FormControls.tsx";
+import { GetStringKeys, Input, createField } from "../common/FormControls/FormControls.tsx";
 import { required } from "../../utilities/validators/validators.ts";
 import { connect } from "react-redux";
 import { login } from "../../redux/auth-reducer.ts";
@@ -61,7 +61,8 @@ export type LoginFormValuesType = {
 }
 
 // type LoginFormValuesTypeKeys = keyof LoginFormValuesType //тут м.б. ключи типов string и number
-type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string> //тут ключи только типа strings
+//type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string> //тут ключи только типа strings
+type LoginFormValuesTypeKeys = GetStringKeys<LoginFormValuesType> //то же, что выше, но инкапсулировано
 
 const Login: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
 
