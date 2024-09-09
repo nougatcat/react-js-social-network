@@ -1,14 +1,14 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Navbar from './components/Navbar/Navbar.jsx';
+import Navbar from './components/Navbar/Navbar.tsx';
 import UsersContainer from './components/Users/UsersContainer.tsx';
 import ProfileContainer from './components/Profile/ProfileContainer.tsx';
-import HeaderContainer from './components/Header/HeaderContainer.jsx';
+import HeaderContainer from './components/Header/HeaderContainer.tsx';
 import LoginPage from './components/Login/Login.tsx';
 import React from 'react';
 import { connect } from 'react-redux';
 import { initializeApp } from './redux/app-reducer.ts';
-import Preloader from './components/common/Preloader/Preloader.jsx';
+import Preloader from './components/common/Preloader/Preloader.tsx';
 
 const DialogsContainer = React.lazy(() => import ('./components/Dialogs/DialogsContainer.tsx'))
 

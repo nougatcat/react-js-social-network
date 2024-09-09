@@ -15,4 +15,5 @@ root.render(
     </React.StrictMode>
 ); 
 
-//? Ветка master будет зарефакторена под typescript
+//? Ветка master - typescript
+//? Ветка no_typescript - javascript

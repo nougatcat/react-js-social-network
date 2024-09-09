@@ -26,7 +26,7 @@ type DispatchPropsType = {
 
 type PropsType = MapPropsType & DispatchPropsType
 
-class ProfileContainer extends React.Component<PropsType> { //withRouter не типизирован, ругается на match
+class ProfileContainer extends React.Component<PropsType> { //!withRouter не типизирован, ругается на match, нет времени разбираться
     requestProfile() { //покажет страницу profile/id
         let userId = this.props.match.params.userId;
         if (!userId) {//для страницы /profile без id 

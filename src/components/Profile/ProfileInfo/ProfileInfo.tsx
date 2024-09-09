@@ -1,4 +1,4 @@
-import Preloader from '../../common/Preloader/Preloader';
+import Preloader from '../../common/Preloader/Preloader.tsx';
 import css from './ProfileInfo.module.css'
 import userPhoto from '../../../assets/images/user.png';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks.tsx';
