@@ -143,7 +143,7 @@ export const unfollow = (userId: number): ThunkType => {
 }
 
 
-type InitialStateActionType = typeof initialState
+export type InitialStateActionType = typeof initialState
 type ActionsTypes = InferActionsTypes<typeof actions>
 // type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 type ThunkType = BaseThunkType<ActionsTypes> //вынесли конструкцию в redux-store
