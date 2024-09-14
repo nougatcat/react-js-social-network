@@ -3,7 +3,7 @@ import { usersAPI } from '../api/usersAPI.ts';
 import { UserType } from "../types/types";
 import { updateObjectInArray } from "../utilities/object-helpers.ts";
 import { AppStateType, BaseThunkType, InferActionsTypes } from "./redux-store";
-import { ResultCodesEnum } from "../api/api.ts";
+import { APIResponseType, ResultCodesEnum } from "../api/api.ts";
 // import { ThunkAction } from "redux-thunk";
 
 type FilterType = {
@@ -121,7 +121,7 @@ export const requestUsers = (page: number, pageSize: number, filter: any): Thunk
 //? на случай, если юзер не авторизован, кнопки follow и unfollow скрыты в ui
 const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>, 
                                     userId: number, 
-                                    apiMethod: any, 
+                                    apiMethod: (userId: number) => Promise<APIResponseType>, 
                                     actionCreator: (userId: number) => ActionsTypes) => {
     dispatch(actions.toggleFollowingProgress(true, userId))
     const data = await apiMethod(userId)
@@ -133,12 +133,12 @@ const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>,
 export const follow = (userId: number): ThunkType => {
     return async (dispatch) => {
         //bind так как будет выполняться в другом месте
-        _followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), actions.followSuccess)
+        await _followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), actions.followSuccess)
     }
 }
 export const unfollow = (userId: number): ThunkType => {
     return async (dispatch) => {
-        _followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), actions.unfollowSuccess)
+        await _followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), actions.unfollowSuccess)
     }
 }
 
