@@ -2,11 +2,12 @@ import React from "react";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { GetStringKeys, Input, createField } from "../common/FormControls/FormControls.tsx";
 import { required } from "../../utilities/validators/validators.ts";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/auth-reducer.ts";
 import { Navigate } from "react-router-dom";
 import styles from "./../common/FormControls/FormControls.module.css";
-import { AppStateType } from "../../redux/redux-store.ts";
+import { AppDispatch, AppStateType } from "../../redux/redux-store.ts";
+import { getIsAuthSelector } from "../../redux/auth-selectors.ts";
 
 type LoginFormOwnProps = {
     captchaUrl: string | null
@@ -43,15 +44,24 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPro
     </form>
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({ form: 'login' })(LoginForm)
 
-type MapStatePropsType = {
-    captchaUrl: string | null
-    isAuth: boolean
-}
-type MapDispatchPropsType = {
-    login: (email: string, password: string, rememberMe: boolean, captcha: any) => void
-}
+
+
 
 export type LoginFormValuesType = {
     email: string
@@ -64,22 +74,22 @@ export type LoginFormValuesType = {
 //type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string> //тут ключи только типа strings
 type LoginFormValuesTypeKeys = GetStringKeys<LoginFormValuesType> //то же, что выше, но инкапсулировано
 
-const Login: React.FC<MapStatePropsType & MapDispatchPropsType> = (props) => {
+export const LoginPage: React.FC = (props) => {
+
+    const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl)
+    const isAuth = useSelector(getIsAuthSelector)
+
+    const dispatch: AppDispatch = useDispatch()
 
     const onSubmit = (formData: LoginFormValuesType) => {
-        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha)
+        dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))
     }
-    if (props.isAuth) {
+    if (isAuth) {
         return <Navigate to={"/profile"} />
     }
 
     return <div>
         <h1>Авторизация</h1>
-        <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl} />
+        <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
     </div>
 }
-const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
-    isAuth: state.auth.isAuth, //если не передать стейт в логин, то проверка на isAuth для редиректа не сработает
-    captchaUrl: state.auth.captchaUrl
-})
-export default connect(mapStateToProps, { login })(Login); //перекидываем диспатчи в логин для онСабмит
