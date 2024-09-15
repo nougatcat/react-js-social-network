@@ -30,10 +30,10 @@ let User: React.FC<PropsType> = ({ user, followingInProgress, follow, unfollow, 
                             user.followed
                                 ? <button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
                                     unfollow(user.id);
-                                }}>Unfollow</button>
+                                }}>Отписаться</button>
                                 : <button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
                                     follow(user.id);
-                                }}>Follow</button>
+                                }}>Подписаться</button>
                             : ''
                     }
                 </div>

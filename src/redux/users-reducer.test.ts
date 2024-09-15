@@ -16,7 +16,7 @@ state = {
     followingInProgress: [],
     filter: {
         term: '',
-        friend: null
+        friend: null as null | boolean
     }
 }})
 

@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { follow, requestUsers, unfollow } from '../../redux/users-reducer.ts';
+import { FilterType, follow, requestUsers, unfollow } from '../../redux/users-reducer.ts';
 import Users from './Users.tsx';
 import Preloader from '../common/Preloader/Preloader.tsx';
 import { compose } from 'redux';
@@ -22,15 +22,13 @@ type MapStatePropsType = {
     users: Array<UserType>
     isAuth: boolean
     followingInProgress: Array<number>
-    filter: any //! урок113
+    filter: FilterType
 }
 type MapDispatchPropsType = {
     //коллбеки
     requestUsers: (page: number,pageSize: number, filter: any) => void
     unfollow: (id: number) => void
     follow: (id: number) => void
-    // followSuccess: Function //! урок113
-    // unfollowSuccess: Function //! урок113
 }
 type OwnPropsType = {
     pageTitle: string //передано из App.js
@@ -65,7 +63,7 @@ class UsersContainer extends React.Component<PropsType> {
         const {pageSize, filter} = this.props //эти две строки аналогичны тому, что закомментировано сверху. Важно писать {}, иначе не будет корректно работать
         this.props.requestUsers(pageNumber,pageSize,filter);
     }
-    onFilterChanged = (filter) => {
+    onFilterChanged = (filter: FilterType) => {
         const {pageSize} = this.props
         this.props.requestUsers(1,pageSize,filter)
     }
@@ -85,12 +83,9 @@ class UsersContainer extends React.Component<PropsType> {
                     onPageChanged={this.onPageChanged}
                     onFilterChanged={this.onFilterChanged}
                     users={this.props.users}
-                    //followSuccess={this.props.followSuccess} //! это нужно? смотри урок 113
-                    //unfollowSuccess={this.props.unfollowSuccess}
                     follow={this.props.follow}
                     unfollow={this.props.unfollow}
                     followingInProgress = {this.props.followingInProgress}
-                    //toggleFollowingProgress={this.props.toggleFollowingProgress}
                     isAuth={this.props.isAuth}
                 />
             </>
@@ -104,8 +99,6 @@ export default compose(
     // withAuthRedirect,
     connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps,
         { // это mapDispatchToProps т.е. это не импорты, а коллбэки
-            //followSuccess,
-            //unfollowSuccess,
             requestUsers,
             follow,
             unfollow

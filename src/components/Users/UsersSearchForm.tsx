@@ -1,13 +1,23 @@
 import { Field, Form, Formik } from 'formik';
+import React from 'react';
+import { FilterType } from '../../redux/users-reducer';
 
-const usersSearchFormValidate = (values) => {
+const usersSearchFormValidate = (values: any) => {
     const errors = {};
     return errors;
 }
 
-const UsersSearchForm = (props) => {
+type FormType = {
+    term: string
+    friend: 'true' | 'false' | 'null'
+} 
+type PropsType = {
+    onFilterChanged: (filter: FilterType) => void
+}
 
-    const submit = (values, { setSubmitting }) => { //setSubmitting содержит параметр isSubmitting true/false
+const UsersSearchForm: React.FC<PropsType> = (props) => {
+// { setSubmitting } : { setSubmitting: (isSubmitting: boolean) => void} - это типизация setSubmitting
+    const submit = (values: FormType, { setSubmitting } : { setSubmitting: (isSubmitting: boolean) => void}) => { //setSubmitting содержит параметр isSubmitting true/false
         const filter = { //преобразуем типы вручную
             term: values.term,
             friend: values.friend === 'null' ? null : values.friend === "true" ? true : false
@@ -28,9 +38,9 @@ const UsersSearchForm = (props) => {
                         <Field type="text" name="term" />
                         {/* селектор */}
                         <Field name='friend' as='select'>
-                            <option value="null">All</option>
-                            <option value="true">Followed</option>
-                            <option value="false">Not followed</option>
+                            <option value="null">Все</option>
+                            <option value="true">Подписки</option>
+                            <option value="false">Не подписан</option>
                         </Field>
                         <button type="submit" disabled={isSubmitting}>
                             Найти
@@ -42,4 +52,6 @@ const UsersSearchForm = (props) => {
     )
 }
 
-export default UsersSearchForm
+const UsersSearchFormMemo = React.memo(UsersSearchForm)
+
+export default UsersSearchFormMemo

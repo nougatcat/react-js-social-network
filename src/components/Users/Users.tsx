@@ -2,8 +2,9 @@ import React from 'react';
 import styles from './Users.module.css';
 import Paginator from '../common/Paginator/Paginator.tsx';
 import User from './User.tsx';
-import UsersSearchForm from './UsersSearchForm.jsx';
-import { UserType } from '../../types/types.ts';
+import UsersSearchForm from './UsersSearchForm.tsx';
+import { UserType } from '../../types/types.ts'
+import { FilterType } from '../../redux/users-reducer.ts';
 
 type PropsType = {
     currentPage: number
@@ -15,7 +16,7 @@ type PropsType = {
     unfollow: (id: number) => void
     follow: (id: number) => void
     isAuth: boolean
-    onFilterChanged: (filter: any) => void
+    onFilterChanged: (filter: FilterType) => void
 }
 
 

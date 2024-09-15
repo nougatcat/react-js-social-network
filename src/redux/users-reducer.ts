@@ -6,10 +6,6 @@ import { AppStateType, BaseThunkType, InferActionsTypes } from "./redux-store";
 import { APIResponseType, ResultCodesEnum } from "../api/api.ts";
 // import { ThunkAction } from "redux-thunk";
 
-type FilterType = {
-    term: string | null
-    friend: boolean | null
-}
 let initialState = {
     users: [] as Array<UserType>, //наполнится данными с сервера
     pageSize: 5,
@@ -19,9 +15,10 @@ let initialState = {
     followingInProgress: [] as Array<number>, //для отслеживания нажатия кнопки follow на юзеров из массива (содержит массив id-шек пользователей, на которых в данный момент подписываемся)
     filter: {
         term: '',
-        friend: null
-    } as FilterType
-};
+        friend: null as null | boolean
+    }
+}
+export type FilterType = typeof initialState.filter
 
 
 const usersReduser = (state = initialState, action: ActionsTypes): InitialStateActionType => {
@@ -104,7 +101,7 @@ export const actions = {
 
 //? TC - thunk creator-ы
 //ThunkAction<ReturnType, StateType, ExtraPayload, Action>
-export const requestUsers = (page: number, pageSize: number, filter: any): ThunkType => { //это thunk creator
+export const requestUsers = (page: number, pageSize: number, filter: FilterType): ThunkType => { //это thunk creator
     return async (dispatch, getState) => { //это thunk
         //getState(). //должен может вернуть стейт целиком //?зачем?
         dispatch(actions.toggleIsFetching(true)); //помещаем прелоадер
