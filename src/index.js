@@ -15,5 +15,6 @@ root.render(
     </React.StrictMode>
 ); 
 
-//? Ветка master - typescript
+//? Ветка master - typescript and ant design
+//? Ветка no_antd - typescript
 //? Ветка no_typescript - javascript
