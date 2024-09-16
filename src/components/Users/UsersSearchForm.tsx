@@ -1,21 +1,27 @@
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { FilterType } from '../../redux/users-reducer';
+import { useSelector } from 'react-redux';
+import { getUsersFilter } from '../../redux/users-selectors.ts';
 
 const usersSearchFormValidate = (values: any) => {
     const errors = {};
     return errors;
 }
-
+type FriendFormType = 'true' | 'false' | 'null'
 type FormType = {
     term: string
-    friend: 'true' | 'false' | 'null'
+    friend: FriendFormType
 } 
 type PropsType = {
     onFilterChanged: (filter: FilterType) => void
 }
 
 const UsersSearchForm: React.FC<PropsType> = (props) => {
+
+
+    const filter = useSelector(getUsersFilter)
+
 // { setSubmitting } : { setSubmitting: (isSubmitting: boolean) => void} - это типизация setSubmitting
     const submit = (values: FormType, { setSubmitting } : { setSubmitting: (isSubmitting: boolean) => void}) => { //setSubmitting содержит параметр isSubmitting true/false
         const filter = { //преобразуем типы вручную
@@ -29,7 +35,8 @@ const UsersSearchForm: React.FC<PropsType> = (props) => {
     return (
         <div>
             <Formik
-                initialValues={{ term: '', filter: null }}
+                enableReinitialize
+                initialValues={{ term: filter.term, friend: String(filter.friend) as FriendFormType }}
                 validate={usersSearchFormValidate}
                 onSubmit={submit}
             >
