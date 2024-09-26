@@ -1,5 +1,4 @@
 import { ProfileType } from '../../types/types.ts';
-import MyPostsContainer from './MyPosts/MyPostsContainer.tsx';
 import ProfileInfo from './ProfileInfo/ProfileInfo.tsx';
 import React from 'react';
 
@@ -22,7 +21,6 @@ const Profile: React.FC<PropsType> = (props) => {
                 isOwner={props.isOwner}
                 savePhoto={props.savePhoto}
                 saveProfile={props.saveProfile}/>
-            <MyPostsContainer  />
         </div> 
     )
 }

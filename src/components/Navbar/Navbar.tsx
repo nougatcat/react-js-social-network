@@ -12,9 +12,6 @@ const Navbar: React.FC = () => {
                 <NavLink to="/profile" className = { navData => navData.isActive ? css.active : css.item }>Профиль</NavLink>
             </div>
             <div>
-                <NavLink to="/dialogs" className = { navData => navData.isActive ? css.active : css.item }>Сообщения</NavLink>
-            </div>
-            <div>
                 <NavLink to="/chat" className = { navData => navData.isActive ? css.active : css.item }>Чатик</NavLink>
             </div>
             <div>

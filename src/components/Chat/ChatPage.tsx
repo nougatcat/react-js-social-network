@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage, startMessagesListening, stopMessagesListening } from "../../redux/chat-reducer.ts";
-import { AppDispatch, AppStateType } from "../../redux/redux-store";
+import { AppDispatch, AppStateType } from "../../redux/redux-store.ts";
 
 export type ChatMessageType = {
     message: string,

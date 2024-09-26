@@ -10,8 +10,7 @@ import { connect } from 'react-redux';
 import { initializeApp } from './redux/app-reducer.ts';
 import Preloader from './components/common/Preloader/Preloader.tsx';
 
-const DialogsContainer = React.lazy(() => import ('./components/Dialogs/DialogsContainer.tsx'))
-const ChatPage = React.lazy(() => import ('./pages/Chat/ChatPage.tsx'))
+const ChatPage = React.lazy(() => import ('./components/Chat/ChatPage.tsx'))
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
@@ -47,9 +46,6 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               </Route>
               <Route path='/chat' element={
                 <React.Suspense fallback={<Preloader />}><ChatPage /></React.Suspense>} />
-              <Route path='/dialogs' element={
-                <React.Suspense fallback={<Preloader />}><DialogsContainer /></React.Suspense>} />
-                {/* Можно написать hoc, который будет помещать компоненту в саспенс с этим фоллбэк для сокращения кода и это будет выглядеть как withSuspense(DialogsContainer) (урок 94/111), необязательно */}
               <Route path='/users' element={<UsersPage pageTitle={'Самураи'} />} />
               <Route path='/login' element={<LoginPage />} />
               {/* * - это любой другой адрес, который не прописан здесь */}

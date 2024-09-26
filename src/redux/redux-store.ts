@@ -1,7 +1,6 @@
 import { combineReducers, legacy_createStore as createStore, applyMiddleware, Action, AnyAction } from "redux";
 import profileReducer from "./profile-reducer.ts";
 import dialogsReducer from "./dialogs-reducer.ts";
-import sidebarReducer from "./sidebar-reducer.ts";
 import usersReduser from "./users-reducer.ts";
 import authReduser from "./auth-reducer.ts";
 import { ThunkAction, ThunkDispatch, thunk as thunkMiddleware } from "redux-thunk";
@@ -13,7 +12,6 @@ import chatReduser from "./chat-reducer.ts";
 let rootReducer = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
-    sidebar: sidebarReducer,
     usersPage: usersReduser,
     auth: authReduser,
     form: formReducer,
