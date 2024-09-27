@@ -24,7 +24,7 @@ const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & Prop
             <div>
                 {createField<ProfileTypeKeys>('Что я умею', 'lookingForAJobDescription', [], Textarea)}
             </div>
-            <div className={css.description__info__contacts}>
+            <div>
                 <div><b>Контакты</b></div>
                 {Object.keys(profile.contacts).map(key => {
                     return <div key={key}>

@@ -24,23 +24,24 @@ let User: React.FC<PropsType> = ({ user, followingInProgress, follow, unfollow, 
                     <img alt="userphoto" src={user.photos.small != null ? user.photos.small : userPhoto} className={styles.userPhoto} />
                 </NavLink>
             </div>
-            <div className={styles.user_follow}>
-                {
-                    isAuth ? //кнопки follow и unfollow есть только если юзер авторизован (этого не было в уроках, я сам добавил)
-                        user.followed
-                            ? <Button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
-                                unfollow(user.id);
-                            }}>Отписаться</Button>
-                            : <Button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
-                                follow(user.id);
-                            }}>Подписаться</Button>
-                        : ''
-                }
-            </div>
+
             <div className={styles.user_name}>
                 <NavLink className={styles.linkToProfile} to={'/profile/' + user.id}>
                     {user.name}
                 </NavLink>
+                <div>
+                    {
+                        isAuth ? //кнопки follow и unfollow есть только если юзер авторизован (этого не было в уроках, я сам добавил)
+                            user.followed
+                                ? <Button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
+                                    unfollow(user.id);
+                                }}>Отписаться</Button>
+                                : <Button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
+                                    follow(user.id);
+                                }}>Подписаться</Button>
+                            : ''
+                    }
+                </div>
             </div>
             <div className={styles.user_status}>{user.status}</div>
             <div className={styles.user_id}>id: {user.id}</div>

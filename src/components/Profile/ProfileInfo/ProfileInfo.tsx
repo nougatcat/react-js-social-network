@@ -5,6 +5,7 @@ import ProfileStatusWithHooks from './ProfileStatusWithHooks.tsx';
 import React, { ChangeEvent, useState } from 'react';
 import ProfileDataForm from './ProfileDataForm.tsx';
 import { ContanctsType, ProfileType } from '../../../types/types.ts';
+import { Button } from 'antd';
 
 type PropsType = {
     profile: ProfileType | null 
@@ -38,17 +39,17 @@ const ProfileInfo: React.FC<PropsType> = (props) => {
     return (
         <div>
             <div className={css.description}>
-                <div className={css.description__img_and_status}>
+                <div className={css.description_img}>
                     <img alt='Ава не загрузилась' src={props.profile.photos.large != null ? props.profile.photos.large : userPhoto} className={css.photo} />
                     <div>{props.isOwner && <div>Загрузить фото:<br /><input type={'file'} onChange={onMainPhotoSelected} /></div>}</div>
                     <strong><br />Статус:</strong>
-                    <div className={css.status}>
-                        <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner} />
-                    </div>
                 </div>
                 {editMode ? <ProfileDataForm initialValues={props.profile} onSubmit={onSubmit} profile={props.profile} />
                     : <ProfileData profile={props.profile} isOwner={props.isOwner}
                         goToEditMode={() => { setEditMode(true) }} />}
+            </div>
+            <div className={css.status}>
+                <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner} />
             </div>
         </div>
     )
@@ -75,12 +76,12 @@ const ProfileData: React.FC<ProfileDataPropsType> = ({ profile, isOwner, goToEdi
             <div>{profile.lookingForAJob ? 'Ищу работу' : 'Не ищу работу'}</div>
             <div>{profile.lookingForAJobDescription ? profile.lookingForAJobDescription : ''}</div>
             <div className={css.description__info__contacts}>
-                <div><b>Контакты</b></div>
                 {Object.keys(profile.contacts).map(key => {
-                    return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key as keyof ContanctsType]} />
+                    if (profile.contacts[key as keyof ContanctsType]) //будут показаны только те контакты, которые есть
+                        return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key as keyof ContanctsType]} />
                 })}
             </div>
-            {isOwner && <div><button onClick={goToEditMode}>Редактировать</button></div>}
+            {isOwner && <div><Button onClick={goToEditMode}>Редактировать</Button></div>}
         </div>
     )
 }

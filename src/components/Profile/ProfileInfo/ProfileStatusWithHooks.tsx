@@ -1,7 +1,8 @@
 import css from './ProfileInfo.module.css'
 
 import React, { ChangeEvent, useEffect, useState } from "react";
-
+import { Button, Input } from 'antd'
+const { TextArea } = Input;
 
 type PropsType = {
     isOwner: boolean
@@ -35,13 +36,13 @@ const ProfileStatusWithHooks: React.FC<PropsType> = (props) => {
             {!editMode &&
                 <div>
                     <span className={css.change__status} onClick={activateEditMode}>
-                        {!props.status ? 'задать статус' : props.status}
+                        {!props.status ? 'Задать статус' : props.status}
                     </span>
                 </div>
             }
             {editMode &&
                 <div>
-                    <input onChange={onStatusChange} autoFocus={true} onBlur={deactivateEditMode} value={status} />
+                    <TextArea autoSize maxLength={300} placeholder="300 символов - максимум" onChange={onStatusChange} autoFocus={true} onBlur={deactivateEditMode} value={status} />
                 </div>
             }
         </div>

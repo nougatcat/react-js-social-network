@@ -1,16 +1,20 @@
 
 .paginator {
-    margin: 15px;
+    margin: 8px;
+    padding: 8px;
     font-size: 25px;
     display: flex;
+    border: 1px solid #d2d6db;
+    border-radius: 6px;
 }
 .pageNumber {
-    color: gray;
+    color: #d2d6db;
     padding: 5px;
     cursor: pointer;
     height: 30px;
     min-width: 30px;
     text-align: center;
+    border-bottom: 3px solid white;
 }
 .pageNumber:hover {
     border-bottom: 3px solid #e5e7eb;
@@ -24,4 +28,7 @@
     width: 40px;
     height: 40px;
     cursor: pointer;
+}
+.arrows:hover {
+    filter: drop-shadow(0 0 0.05rem black);
 }

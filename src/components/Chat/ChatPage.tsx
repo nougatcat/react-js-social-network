@@ -5,8 +5,8 @@ import { AppDispatch, AppStateType } from "../../redux/redux-store.ts";
 import { Navigate } from "react-router-dom";
 import { getIsAuthSelector } from '../../redux/auth-selectors.ts';
 import styles from './ChatPage.module.css'
-import { Button, Input } from 'antd'
 import userPhoto from '../../assets/images/user.png';
+import { Button, Input } from 'antd'
 const { TextArea } = Input;
 
 export type ChatMessageType = {
@@ -92,7 +92,7 @@ const AddMessageForm: React.FC = () => {
         setMessage('') //зануляем поле ввода
     }
     return <div>
-        <div><TextArea placeholder="100 символов - максимум" autoSize style={{margin: '8px 0 8px 0'}} name="" id="" onChange={(e) => setMessage(e.currentTarget.value)} value={message}></TextArea></div>
+        <div><TextArea maxLength={100} placeholder="100 символов - максимум" autoSize style={{margin: '8px 0 8px 0'}} name="" id="" onChange={(e) => setMessage(e.currentTarget.value)} value={message}></TextArea></div>
         <div><Button disabled={status !== 'ready'} onClick={sendMessageHandler}>Отправить</Button></div>
     </div>
 }

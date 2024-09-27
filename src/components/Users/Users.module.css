@@ -12,7 +12,7 @@
 .user {
     display: grid;
     grid-template-areas: 
-    "icon name follow"
+    "icon name name"
     "icon status status"
     ;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -25,9 +25,6 @@
     grid-area: icon;
     padding-right: 8px;
 }
-.user_follow {
-    grid-area: follow;
-}
 .user_name {
     grid-area: name;
     padding-right: 8px;
@@ -36,7 +33,7 @@
 }
 .user_id {
     font-size: 20px;
-    color: gray;
+    color: #d2d6db;
 }
 .user_status {
     grid-area: status;
