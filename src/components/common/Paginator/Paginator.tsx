@@ -3,6 +3,7 @@ import styles from './Paginator.module.css';
 import cn from "classnames"; //Если не будет работать, установить @types/classnames
 import arrowLeftLogo from '../../../assets/images/arrowLeftLogo.svg'
 import arrowRightLogo from '../../../assets/images/arrowRightLogo.svg'
+import { Button} from 'antd'
 
 type PropsType = {
     totalItemsCount: number
@@ -43,9 +44,9 @@ let Paginator: React.FC<PropsType> = ({totalItemsCount, pageSize, currentPage = 
         </div>
         <div>
             {portionNumber > 1 &&
-                <button onClick={() => { setPortionNumber(1) }}>В начало</button>}
+                <Button style={{margin: '8px 4px 8px 8px'}} onClick={() => { setPortionNumber(1) }}>В начало</Button>}
             {portionCount > portionNumber &&
-                <button onClick={() => { setPortionNumber(portionCount) }}>В конец</button>}
+                <Button style={{margin: '8px 8px 8px 4px'}} onClick={() => { setPortionNumber(portionCount) }}>В конец</Button>}
         </div>
     </div>
 }

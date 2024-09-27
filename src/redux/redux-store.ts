@@ -31,10 +31,13 @@ export type InferActionsTypes<T> = T extends {[key: string]: (...args: any[]) =>
 
 export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A> //по умолчанию может использовать любые экшены
 
-let store = createStore(rootReducer, 
-    composeWithDevTools( applyMiddleware(thunkMiddleware))
-    ); 
-    //!Если расширение выключено, то использование composeWithDevTools может вызвать ошибку, еще на него почему-то ругается ts
+// let store = createStore(rootReducer, 
+//     composeWithDevTools( applyMiddleware(thunkMiddleware))
+//     ); 
+//     //!Если расширение выключено, то использование composeWithDevTools может вызвать ошибку, еще на него почему-то ругается ts
+
+let store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+
 
 // @ts-ignore
 window.store = store; //для отладки делаем глобальную копию store

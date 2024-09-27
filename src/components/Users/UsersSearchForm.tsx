@@ -1,4 +1,6 @@
-import { Field, Form, Formik } from 'formik';
+// import { Field, Form, Formik } from 'formik';
+import { Field, Formik } from 'formik';
+import { Form, SubmitButton, Select, Input } from 'formik-antd'
 import React from 'react';
 import { FilterType } from '../../redux/users-reducer';
 import { useSelector } from 'react-redux';
@@ -41,17 +43,17 @@ const UsersSearchForm: React.FC<PropsType> = (props) => {
                 onSubmit={submit}
             >
                 {({ isSubmitting }) => (
-                    <Form>
-                        <Field type="text" name="term" />
+                    <Form style={{margin: '8px'}}>
+                        <Input type="text" name="term" />
                         {/* селектор */}
-                        <Field name='friend' as='select'>
+                        <Select name='friend' style={{minWidth: '120px'}}>
                             <option value="null">Все</option>
                             <option value="true">Подписки</option>
                             <option value="false">Не подписан</option>
-                        </Field>
-                        <button type="submit" disabled={isSubmitting}>
+                        </Select>
+                        <SubmitButton style={{margin: '8px'}} type="default" disabled={isSubmitting}>
                             Найти
-                        </button>
+                        </SubmitButton>
                     </Form>
                 )}
             </Formik>

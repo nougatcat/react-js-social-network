@@ -13,11 +13,11 @@ import * as queryString from 'querystring'
 import Preloader from '../common/Preloader/Preloader.tsx';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string }
-type UsersPagePropsType = {
-    pageTitle: string //передано из App.js
-}
+// type UsersPagePropsType = {
+//     pageTitle: string //передано из App.js
+// }
 
-export const Users: React.FC<UsersPagePropsType> = (props) => {
+export const Users: React.FC = () => {
 
     //useSelector и useDispatch нужны вместо переброски пропсов
     const totalUsersCount = useSelector(getTotalUsersCount)
@@ -91,7 +91,6 @@ export const Users: React.FC<UsersPagePropsType> = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            <h3>{props.pageTitle}</h3>
             <UsersSearchForm onFilterChanged={onFilterChanged} />
             <Paginator currentPage={currentPage}
                 onPageChanged={onPageChanged}

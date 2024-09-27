@@ -46,7 +46,8 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               </Route>
               <Route path='/chat' element={
                 <React.Suspense fallback={<Preloader />}><ChatPage /></React.Suspense>} />
-              <Route path='/users' element={<Users pageTitle={'Самураи'} />} />
+              {/* <Route path='/users' element={<Users pageTitle={'Самураи'} />} /> */}
+              <Route path='/users' element={<Users/>} />
               <Route path='/login' element={<LoginPage />} />
               {/* * - это любой другой адрес, который не прописан здесь */}
               <Route path='*' element={<div><h1>404 NOT FOUND</h1></div>} />
