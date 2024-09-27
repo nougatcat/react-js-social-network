@@ -4,6 +4,10 @@ import { sendMessage, startMessagesListening, stopMessagesListening } from "../.
 import { AppDispatch, AppStateType } from "../../redux/redux-store.ts";
 import { Navigate } from "react-router-dom";
 import { getIsAuthSelector } from '../../redux/auth-selectors.ts';
+import styles from './ChatPage.module.css'
+import { Button, Input } from 'antd'
+import userPhoto from '../../assets/images/user.png';
+const { TextArea } = Input;
 
 export type ChatMessageType = {
     message: string,
@@ -56,18 +60,22 @@ const Messages: React.FC = () => {
         if (isAutoScroll)
             messagesAnchorRef.current?.scrollIntoView({behavior: 'smooth'})
     }, [messages])
-    return <div style={{ height: '400px', overflowY: 'auto' }} onScroll={scrollHandler}>
+    return <div style={{ height: '75vh', overflowY: 'auto' }} onScroll={scrollHandler}>
         {messages.map((m, index) => <Message key={m.id} message={m} />)}
         <div ref={messagesAnchorRef}></div>
     </div>
 }
 
 const Message: React.FC<{ message: ChatMessageType }> = React.memo( ({ message }) => { //React.memo используем потому что эта компонента часто перерисовывается
-    return <div>
-        <img style={{ width: '50px' }} src={message.photo} alt="" /><b>{message.userName}</b>
-        <br />
-        {message.message}
-        <hr />
+    return <div className={styles.message}>
+        <div className={styles.message_photo}>
+            {message.photo
+            ? <img style={{ width: '50px' }} src={message.photo} alt={"Юзер"} />
+            : <img style={{ width: '50px' }} src={userPhoto} alt={"Юзер"} />
+            }
+        </div>
+        <div className={styles.message_userName}>{message.userName}</div>
+        <div className={styles.message_text}>{message.message}</div>
     </div>
 })
 
@@ -84,8 +92,8 @@ const AddMessageForm: React.FC = () => {
         setMessage('') //зануляем поле ввода
     }
     return <div>
-        <div><textarea name="" id="" onChange={(e) => setMessage(e.currentTarget.value)} value={message}></textarea></div>
-        <div><button disabled={status !== 'ready'} onClick={sendMessageHandler}>Отправить</button></div>
+        <div><TextArea placeholder="100 символов - максимум" autoSize style={{margin: '8px 0 8px 0'}} name="" id="" onChange={(e) => setMessage(e.currentTarget.value)} value={message}></TextArea></div>
+        <div><Button disabled={status !== 'ready'} onClick={sendMessageHandler}>Отправить</Button></div>
     </div>
 }
 

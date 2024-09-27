@@ -1,0 +1,23 @@
+.message {
+    margin-bottom: 8px;
+    display: grid;
+    grid-template-areas: 
+    "photo name"
+    "photo msg"
+    ;
+    justify-content: start;
+}
+.message_photo {
+    grid-area: photo;
+    padding-right: 8px;
+}
+.message_photo img {
+    border-radius: 12px;
+}
+.message_userName {
+    grid-area: name;
+    font-weight: bold;
+}
+.message_text {
+    grid-area: msg;
+}
