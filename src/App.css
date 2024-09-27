@@ -7,14 +7,16 @@
   "head head"
   "nav main"
   ;
-
   width: 1200px;
   margin: 0 auto; 
-  box-shadow: 0 0 5px 5px rgba(0,0,0,0.8);
 }
 
 
 .app-wrapper-content {
   grid-area: main;
-  background-color: rgb(152, 152, 219);
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 8px;
+  margin: 8px;
 }

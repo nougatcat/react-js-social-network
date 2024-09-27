@@ -5,15 +5,19 @@ import User from './User.tsx';
 import UsersSearchForm from './UsersSearchForm.tsx';
 import { FilterType, requestUsers, follow, unfollow } from '../../redux/users-reducer.ts';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsersFilter, getUsersSelector } from '../../redux/users-selectors.ts';
+import { getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsersFilter, getUsersSelector } from '../../redux/users-selectors.ts';
 import { AppDispatch } from '../../redux/redux-store.ts';
 import { getIsAuthSelector } from '../../redux/auth-selectors.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as queryString from 'querystring'
+import Preloader from '../common/Preloader/Preloader.tsx';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string }
+type UsersPagePropsType = {
+    pageTitle: string //передано из App.js
+}
 
-export const Users: React.FC = () => {
+export const Users: React.FC<UsersPagePropsType> = (props) => {
 
     //useSelector и useDispatch нужны вместо переброски пропсов
     const totalUsersCount = useSelector(getTotalUsersCount)
@@ -23,6 +27,7 @@ export const Users: React.FC = () => {
     const users = useSelector(getUsersSelector)
     const followingInProgress = useSelector(getFollowingInProgress)
     const isAuth = useSelector(getIsAuthSelector)
+    const isFetching = useSelector(getIsFetching)
 
     const dispatch: AppDispatch = useDispatch()
 
@@ -86,11 +91,13 @@ export const Users: React.FC = () => {
 
     return (
         <div className={styles.wrapper}>
+            <h3>{props.pageTitle}</h3>
             <UsersSearchForm onFilterChanged={onFilterChanged} />
             <Paginator currentPage={currentPage}
                 onPageChanged={onPageChanged}
                 totalItemsCount={totalUsersCount}
                 pageSize={pageSize}/>
+            {isFetching ? <Preloader /> : null}
             {
                 users.map(user => <User user={user}
                                             key={user.id} //key - сервисная переменная для индексации, нужна чтобы не отрисовывалось то, что уже отрисовано. в компоненте не используется вручную

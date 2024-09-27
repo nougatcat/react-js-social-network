@@ -8,6 +8,47 @@
     font-size: 30px;
 }
 
-.status {
-    word-break:break-all
+
+.user {
+    display: grid;
+    grid-template-areas: 
+    "icon name follow"
+    "icon status status"
+    ;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    margin: 8px;
+    padding: 8px;
+    justify-content: start;
+}
+.user_icon {
+    grid-area: icon;
+    padding-right: 8px;
+}
+.user_follow {
+    grid-area: follow;
+}
+.user_name {
+    grid-area: name;
+    padding-right: 8px;
+    font-size: 25px;
+    font-weight: bold;
+}
+.user_id {
+    font-size: 20px;
+    color: gray;
+}
+.user_status {
+    grid-area: status;
+    word-break:break-all;
+    font-size: 20px;
+}
+.linkToProfile {
+    color:black;
+}
+.linkToProfile:visited {
+    color:black;
+}
+.linkToProfile:hover {
+    text-decoration: underline;
 }

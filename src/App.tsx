@@ -1,7 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar.tsx';
-import { UsersPage } from './components/Users/UsersContainer.tsx';
 import ProfileContainer from './components/Profile/ProfileContainer.tsx';
 import HeaderContainer from './components/Header/HeaderContainer.tsx';
 import { LoginPage } from './components/Login/LoginPage.tsx';
@@ -9,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { initializeApp } from './redux/app-reducer.ts';
 import Preloader from './components/common/Preloader/Preloader.tsx';
+import { Users } from './components/Users/Users.tsx';
 
 const ChatPage = React.lazy(() => import ('./components/Chat/ChatPage.tsx'))
 
@@ -46,7 +46,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               </Route>
               <Route path='/chat' element={
                 <React.Suspense fallback={<Preloader />}><ChatPage /></React.Suspense>} />
-              <Route path='/users' element={<UsersPage pageTitle={'Самураи'} />} />
+              <Route path='/users' element={<Users pageTitle={'Самураи'} />} />
               <Route path='/login' element={<LoginPage />} />
               {/* * - это любой другой адрес, который не прописан здесь */}
               <Route path='*' element={<div><h1>404 NOT FOUND</h1></div>} />
