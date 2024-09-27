@@ -11,7 +11,6 @@ import chatReduser from "./chat-reducer.ts";
 
 let rootReducer = combineReducers({
     profilePage: profileReducer,
-    dialogsPage: dialogsReducer,
     usersPage: usersReduser,
     auth: authReduser,
     form: formReducer,

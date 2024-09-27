@@ -7,6 +7,7 @@ import { getIsAuthSelector } from '../../redux/auth-selectors.ts';
 import styles from './ChatPage.module.css'
 import userPhoto from '../../assets/images/user.png';
 import { Button, Input } from 'antd'
+import Preloader from "../common/Preloader/Preloader.tsx";
 const { TextArea } = Input;
 
 export type ChatMessageType = {
@@ -37,6 +38,7 @@ const Chat: React.FC = () => {
     },[])
 
     return <div>
+        {status !== 'ready' && <Preloader />}
         {status === 'error' && <div>Some error occured. Refresh the page</div>}
         <>
             <Messages />
@@ -98,7 +100,5 @@ const AddMessageForm: React.FC = () => {
 }
 
 export default ChatPage
-//! есть баг с повторной загрузкой одних и тех же сообщений при возвращении на компоненту с другой компоненты
 
-
-//!Теле 2 закрывает вебсокет, используй впн или другого провайдера
+//!Сокет периодически сам закрывается. Вероятно, проблема на сервере, либо провайдер отсоединяет

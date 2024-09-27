@@ -26,6 +26,12 @@ const chatReduser = (state = initialState, action: ActionsTypes): InitialStateTy
                 status: action.payload.status
             }
         }
+        case "chat/MESSAGES_CLEANED": {
+            return {
+                status: 'pending',
+                messages: []
+            }
+        }
         default:
             return state;
     }
@@ -37,6 +43,9 @@ const actions = {
     }as const),
     statusChanged: (status: StatusType) => ({
         type: 'chat/STATUS_CHANGED', payload: {status}
+    }as const),
+    cleanMessages: () => ({
+        type: 'chat/MESSAGES_CLEANED'
     }as const)
 }
 
@@ -69,6 +78,7 @@ export const stopMessagesListening = (): ThunkType => async (dispatch) => {
     chatAPI.unsubscribe('messages-received', newMessageHandlerCreator(dispatch))
     chatAPI.unsubscribe('status-changed', statusChangedHandlerCreator(dispatch))
     chatAPI.stop()
+    dispatch(actions.cleanMessages()) //Фикс чтобы не дублировались сообщения при перезаходе в компонент
 }
 export const sendMessage = (message: string): ThunkType => async (dispatch) => {
     chatAPI.sendMessage(message)

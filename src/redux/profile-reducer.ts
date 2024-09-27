@@ -7,30 +7,13 @@ import { ResultCodesEnum } from "../api/api.ts";
 
 
 let initialState = {
-    posts: [
-        { id: 1, message: 'Я что-то написал', likesCount: 2 },
-        { id: 2, message: 'Привет мир', likesCount: 51 }
-    ] as Array<PostType>,
     profile: null as ProfileType | null,
-    status: '',
-    // newPostText: '' // больше не используется
+    status: ''
 } //значение по умолчанию
 
 const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 
     switch (action.type) {
-        case "profilePage/ADD-POST": {
-            let newPost = {
-                id: 5,
-                message: action.newPostText,
-                likesCount: 0
-            };
-            return {
-                ...state,
-                posts: [...state.posts, newPost], //пушим пост, но он удаляется после перезагрузки страницы, т.к. нет бэкенда (в файл state изменения не записываются)
-                // newPostText: ''
-            };
-        }
         case "profilePage/SET_USER_PROFILE": {
             return {
                 ...state,
@@ -41,12 +24,6 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
             return {
                 ...state,
                 status: action.status
-            }
-        }
-        case "profilePage/DELETE_POST": {
-            return {
-                ...state,
-                posts: [...state.posts.filter(post => post.id !== action.postId)]
             }
         }
         case "profilePage/SAVE_PHOTO_SUCCESS": {
@@ -61,10 +38,8 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
 }
 
 export const actions = {
-    addPostActionCreator : (newPostText: string) => ({type: 'profilePage/ADD-POST', newPostText} as const), //то же самое, что с ретурном
     setUserProfile : (profile: ProfileType)  => ({type: 'profilePage/SET_USER_PROFILE',profile} as const),
     setStatus : (status: string) => ({type: 'profilePage/SET_STATUS',status} as const),
-    deletePost : (postId: Number) => ({type: 'profilePage/DELETE_POST',postId} as const),
     savePhotoSuccess : (photos: PhotosType) => ({type: 'profilePage/SAVE_PHOTO_SUCCESS',photos} as const)
 }
 
