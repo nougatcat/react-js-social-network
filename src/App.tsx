@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar.tsx';
 import ProfileContainer from './components/Profile/ProfileContainer.tsx';
-import HeaderContainer from './components/Header/HeaderContainer.tsx';
+import Header from './components/Header/Header.tsx';
 import { LoginPage } from './components/Login/LoginPage.tsx';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -36,7 +36,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
       <BrowserRouter> {/* обрамление для роутинга */}
         <div className="app-wrapper">
 
-          <HeaderContainer />
+          <Header />
           <Navbar />
           <div className="app-wrapper-content"> {/* класс определяет основную грид арею */}
             {/* <Routes> вместо устаревшего <Switch> */}

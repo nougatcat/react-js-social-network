@@ -1,25 +1,29 @@
 import React from 'react';
 import css from './Header.module.css';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIsAuthSelector } from '../../redux/auth-selectors.ts';
+import { AppDispatch } from '../../redux/redux-store';
+import { logout } from "../../redux/auth-reducer.ts";
+import { Button } from 'antd';
 
 
-export type MapPropsType = {
-    isAuth: boolean
-    id: number | null
-    login: string | null
-}
-export type DispatchPropsType = {
-    logout: () => void
-}
+const Header: React.FC = () => {
+    const isAuth = useSelector(getIsAuthSelector)
+    // const login = useSelector(getLoginSelector)
+    // const id = useSelector(getIdSelector)
+    const dispatch: AppDispatch = useDispatch()
+    const _logout = () => {
+        dispatch(logout())
+    }
 
-const Header: React.FC<MapPropsType & DispatchPropsType> = (props) => {
     return (
         <header className={css.header}>
             <img className={css.header__image} src='./logo192.png' alt="" />
             <div className={css.loginBlock}>
-                {props.isAuth 
-                    ? <div>{props.login + ' ' + props.id} - <button onClick={props.logout}>Выйти</button></div>
-                    : <NavLink to={'/login'}>Войти</NavLink>
+                {isAuth 
+                    ? <Button onClick={_logout}>Выйти</Button>
+                    : <Button><NavLink to={'/login'}>Войти</NavLink></Button>
                 }
             </div>
         </header>

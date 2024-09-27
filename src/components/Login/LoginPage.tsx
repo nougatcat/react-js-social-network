@@ -28,9 +28,11 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPro
             <Field component={Input} name="rememberMe" type="checkbox" /> Запомнить меня
         </div>  */}
         {/*филды зарефакторены в createField чтобы сократить код */}
-        {createField<LoginFormValuesTypeKeys>("Email", "email", [required], Input)}
-        {createField<LoginFormValuesTypeKeys>("Password", "password", [required], Input, { type: "password" })}
-        {createField<LoginFormValuesTypeKeys>(undefined, "rememberMe", [], Input, { type: "checkbox" }, "remember me")}
+        {createField<LoginFormValuesTypeKeys>("free@samuraijs.com", "email", [required], Input)}
+        {createField<LoginFormValuesTypeKeys>("free", "password", [required], Input, { type: "password" })}
+        <div className={styles.rememberMe}>
+            <Field component={Input} name="rememberMe" type="checkbox" /> <div>Запомнить меня</div>
+        </div>
 
         {captchaUrl && <img alt="captcha" src={captchaUrl} />}
         {captchaUrl && createField('Символы с картинки','captcha',[required],Input)}

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import styles from './Paginator.module.css';
 import cn from "classnames"; //Если не будет работать, установить @types/classnames
+import arrowLeftLogo from '../../../assets/images/arrowLeftLogo.svg'
+import arrowRightLogo from '../../../assets/images/arrowRightLogo.svg'
 
 type PropsType = {
     totalItemsCount: number
@@ -26,7 +28,7 @@ let Paginator: React.FC<PropsType> = ({totalItemsCount, pageSize, currentPage = 
     return <div>
         <div className={styles.paginator}>
             {portionNumber > 1 &&
-                <button onClick={() => { setPortionNumber(portionNumber - 1) }}>Назад</button>}
+                <img className={styles.arrows} src={arrowLeftLogo} alt='Назад' onClick={() => { setPortionNumber(portionNumber - 1) }} />}
             {pages
                 .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
                 .map((p) => {
@@ -37,7 +39,7 @@ let Paginator: React.FC<PropsType> = ({totalItemsCount, pageSize, currentPage = 
                         }}>{p}</div>
                 })}
             {portionCount > portionNumber &&
-                <button onClick={() => { setPortionNumber(portionNumber + 1) }}>Далее</button>}
+                <img className={styles.arrows} src={arrowRightLogo} alt='Далее' onClick={() => { setPortionNumber(portionNumber + 1) }} />}
         </div>
         <div>
             {portionNumber > 1 &&

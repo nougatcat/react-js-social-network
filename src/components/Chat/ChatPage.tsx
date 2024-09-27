@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage, startMessagesListening, stopMessagesListening } from "../../redux/chat-reducer.ts";
 import { AppDispatch, AppStateType } from "../../redux/redux-store.ts";
+import { Navigate } from "react-router-dom";
+import { getIsAuthSelector } from '../../redux/auth-selectors.ts';
 
 export type ChatMessageType = {
     message: string,
@@ -11,6 +13,8 @@ export type ChatMessageType = {
 }
 
 const ChatPage: React.FC = () => {
+    const isAuth = useSelector(getIsAuthSelector)
+    if (!isAuth) { return <Navigate to={'/login'} replace={true} />}
     return <div>
         <Chat />
     </div>

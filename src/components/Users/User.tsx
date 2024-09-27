@@ -3,6 +3,7 @@ import styles from './Users.module.css';
 import userPhoto from '../../assets/images/user.png';
 import { NavLink } from 'react-router-dom';
 import { UserType } from '../../types/types';
+import { Button } from 'antd';
 
 type PropsType = {
     user: UserType
@@ -27,12 +28,12 @@ let User: React.FC<PropsType> = ({ user, followingInProgress, follow, unfollow, 
                 {
                     isAuth ? //кнопки follow и unfollow есть только если юзер авторизован (этого не было в уроках, я сам добавил)
                         user.followed
-                            ? <button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
+                            ? <Button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
                                 unfollow(user.id);
-                            }}>Отписаться</button>
-                            : <button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
+                            }}>Отписаться</Button>
+                            : <Button disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
                                 follow(user.id);
-                            }}>Подписаться</button>
+                            }}>Подписаться</Button>
                         : ''
                 }
             </div>
