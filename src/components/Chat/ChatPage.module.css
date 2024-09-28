@@ -18,6 +18,12 @@
     grid-area: name;
     font-weight: bold;
 }
+.message_userName a {
+    color: black;
+}
+.message_userName a:hover {
+    text-decoration: underline;
+}
 .message_text {
     grid-area: msg;
 }
