@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar.tsx';
 import ProfileContainer from './components/Profile/ProfileContainer.tsx';
@@ -33,7 +33,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
   render() {
     if (!this.props.initialized) return <Preloader />
     return ( //возвращаем jsx разметку с другими компонентами
-      <BrowserRouter> {/* обрамление для роутинга */}
+      <HashRouter basename ="/"> {/* обрамление для роутинга. Обычно использутся BrowserRouter, но он вызывает проблемы с github pages */}
         <div className="app-wrapper">
 
           <Header />
@@ -55,7 +55,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
             </Routes>
           </div>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 }
