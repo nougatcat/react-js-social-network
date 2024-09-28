@@ -44,9 +44,9 @@ let Paginator: React.FC<PropsType> = ({totalItemsCount, pageSize, currentPage = 
         </div>
         <div>
             {portionNumber > 1 &&
-                <Button style={{margin: '8px 4px 8px 8px'}} onClick={() => { setPortionNumber(1) }}>В начало</Button>}
+                <Button style={{margin: '0 0 8px 8px'}} onClick={() => { setPortionNumber(1) }}>В начало</Button>}
             {portionCount > portionNumber &&
-                <Button style={{margin: '8px 8px 8px 4px'}} onClick={() => { setPortionNumber(portionCount) }}>В конец</Button>}
+                <Button style={{margin: '0 0 8px 8px'}} onClick={() => { setPortionNumber(portionCount) }}>В конец</Button>}
         </div>
     </div>
 }

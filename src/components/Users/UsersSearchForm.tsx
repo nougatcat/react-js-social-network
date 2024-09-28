@@ -51,7 +51,7 @@ const UsersSearchForm: React.FC<PropsType> = (props) => {
                             <option value="true">Подписки</option>
                             <option value="false">Не подписан</option>
                         </Select>
-                        <SubmitButton style={{margin: '8px'}} type="default" disabled={isSubmitting}>
+                        <SubmitButton style={{margin: '8px 8px 0 8px'}} type="default" disabled={isSubmitting}>
                             Найти
                         </SubmitButton>
                     </Form>
