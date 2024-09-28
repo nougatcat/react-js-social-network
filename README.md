@@ -1,11 +1,13 @@
 Это Single Page Application с использованием React, Redux, Axios и других библиотек по урокам "React JS - Путь самурая"
 
-### Todo: Опубликовать в github pages
-Версия без TypeScript сохранена в ветке no_typescript<br/>
-Версия со всеми компонентами сохранена в ветке way-of-samurai
+### Проект опубликован на github pages! https://nougatcat.github.io/react-js-social-network
 
 ### Важно
-redux-form может быть установлен только с помощью --force. Из-за этого при клонировании репозитория надо писать `npm install --force`. Это происходит из-за того, что redux-form официально не поддерживает React 18, но по факту всё работает. Чтобы не пришлось снова использовать --force, имеет смысл в новых проектах использовать Formik вместо redux-form.
+1. redux-form может быть установлен только с помощью --force. Из-за этого при клонировании репозитория надо писать `npm install --force`. Это происходит из-за того, что redux-form официально не поддерживает React 18, но по факту всё работает. Чтобы не пришлось снова использовать --force, имеет смысл в новых проектах использовать Formik вместо redux-form. <br/>
+2. Версия без TypeScript сохранена в ветке no_typescript<br/>
+Версия со всеми компонентами сохранена в ветке way-of-samurai
+3. Тестовая учетная запись: Email: free@samuraijs.com, пароль: free
+
 
 # Getting Started with Create React App
 
