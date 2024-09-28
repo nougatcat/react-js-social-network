@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/react-js-social-network/static/css/main.88e390ce.css",
+    "main.js": "/react-js-social-network/static/js/main.fda879a3.js",
+    "static/css/271.2351c400.chunk.css": "/react-js-social-network/static/css/271.2351c400.chunk.css",
+    "static/js/271.6477fb97.chunk.js": "/react-js-social-network/static/js/271.6477fb97.chunk.js",
+    "index.html": "/react-js-social-network/index.html",
+    "static/media/arrowRightLogo.svg": "/react-js-social-network/static/media/arrowRightLogo.02faeda9288b63a7e3a4321b141e04d5.svg",
+    "static/media/arrowLeftLogo.svg": "/react-js-social-network/static/media/arrowLeftLogo.23b8aa71a0465c0a96e8e48afb845231.svg",
+    "static/media/chatLogo.svg": "/react-js-social-network/static/media/chatLogo.60e1bb2d05b7b3881e7895f729c024ba.svg",
+    "static/media/usersLogo.svg": "/react-js-social-network/static/media/usersLogo.151c872d679121150d54952849b31c5c.svg",
+    "static/media/profileLogo.svg": "/react-js-social-network/static/media/profileLogo.62b6b7de6b8faf32e28c51ae3733bf80.svg",
+    "main.88e390ce.css.map": "/react-js-social-network/static/css/main.88e390ce.css.map",
+    "main.fda879a3.js.map": "/react-js-social-network/static/js/main.fda879a3.js.map",
+    "271.2351c400.chunk.css.map": "/react-js-social-network/static/css/271.2351c400.chunk.css.map",
+    "271.6477fb97.chunk.js.map": "/react-js-social-network/static/js/271.6477fb97.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.88e390ce.css",
+    "static/js/main.fda879a3.js"
+  ]
+}
