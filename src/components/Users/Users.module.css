@@ -31,9 +31,6 @@
     padding-right: 8px;
     font-size: 25px;
     font-weight: bold;
-    @media screen and (max-width: 1000px) {
-        font-size: 20px;
-    }
 }
 .user_id {
     font-size: 20px;
@@ -43,9 +40,6 @@
     grid-area: status;
     word-break:break-all;
     font-size: 20px;
-    @media screen and (max-width: 1000px) {
-        font-size: 15px;
-    }
 }
 .linkToProfile {
     color:black;
@@ -55,4 +49,13 @@
 }
 .linkToProfile:hover {
     text-decoration: underline;
+}
+
+@media screen and (max-width: 1100px) {
+    .user_name {
+        font-size: 20px;
+    }
+    .user_status {
+        font-size: 15px;
+    }
 }
