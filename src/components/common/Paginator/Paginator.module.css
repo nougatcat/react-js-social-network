@@ -6,15 +6,24 @@
     display: flex;
     border: 1px solid #d2d6db;
     border-radius: 6px;
+    @media screen and (max-width: 1000px) {
+        font-size: 17px;
+        padding: 2px;
+    }
 }
 .pageNumber {
+    word-break: break-all;
     color: #d2d6db;
     padding: 5px;
     cursor: pointer;
-    height: 30px;
+    min-height: 30px;
     min-width: 30px;
     text-align: center;
     border-bottom: 3px solid white;
+    @media screen and (max-width: 1000px) {
+        padding: 2px;
+    }
+
 }
 .pageNumber:hover {
     border-bottom: 3px solid #e5e7eb;

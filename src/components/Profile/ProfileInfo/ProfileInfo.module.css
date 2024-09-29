@@ -3,9 +3,11 @@
     display: grid;
     grid-template-areas: 'img info';
     justify-content: flex-start;
-
     padding: 8px;
     font-size: 20px;
+    @media screen and (max-width: 1000px) {
+        grid-template-areas: 'img' 'info';
+    }
     .description_img{
         padding-right: 20px;
         .photo {

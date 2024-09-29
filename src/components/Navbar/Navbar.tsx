@@ -10,17 +10,17 @@ const Navbar: React.FC = () => {
         <nav className={css.navigation}>
             <div className={css.navigation_element}>
                 <NavLink to="/profile" className={navData => navData.isActive ? css.active : css.item}>
-                    <img style={{margin: "0 8px 0 8px"}} src={profileLogo} alt="" />Профиль
+                    <img style={{margin: "0 8px 0 8px"}} src={profileLogo} alt="" /><span>Профиль</span>
                 </NavLink>
             </div>
             <div className={css.navigation_element}>
                 <NavLink to="/chat" className={navData => navData.isActive ? css.active : css.item}>
-                    <img style={{margin: "0 8px 0 8px"}} src={chatLogo} alt="" />Чатик
+                    <img style={{margin: "0 8px 0 8px"}} src={chatLogo} alt="" /><span>Чатик</span>
                 </NavLink>
             </div>
             <div className={css.navigation_element}>
                 <NavLink to="/users" className={navData => navData.isActive ? css.active : css.item}>
-                    <img style={{margin: "0 8px 0 8px"}} src={usersLogo} alt="" />Юзеры
+                    <img style={{margin: "0 8px 0 8px"}} src={usersLogo} alt="" /><span>Юзеры</span>
                 </NavLink>
             </div>
         </nav>

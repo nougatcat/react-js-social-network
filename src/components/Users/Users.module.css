@@ -26,10 +26,14 @@
     padding-right: 8px;
 }
 .user_name {
+    word-break:break-all;
     grid-area: name;
     padding-right: 8px;
     font-size: 25px;
     font-weight: bold;
+    @media screen and (max-width: 1000px) {
+        font-size: 20px;
+    }
 }
 .user_id {
     font-size: 20px;
@@ -39,6 +43,9 @@
     grid-area: status;
     word-break:break-all;
     font-size: 20px;
+    @media screen and (max-width: 1000px) {
+        font-size: 15px;
+    }
 }
 .linkToProfile {
     color:black;
