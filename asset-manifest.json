@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react-js-social-network/static/css/main.c5fa4e5a.css",
-    "main.js": "/react-js-social-network/static/js/main.e599d16b.js",
+    "main.css": "/react-js-social-network/static/css/main.8d931415.css",
+    "main.js": "/react-js-social-network/static/js/main.58681092.js",
     "static/css/271.2351c400.chunk.css": "/react-js-social-network/static/css/271.2351c400.chunk.css",
     "static/js/271.6477fb97.chunk.js": "/react-js-social-network/static/js/271.6477fb97.chunk.js",
     "index.html": "/react-js-social-network/index.html",
@@ -10,13 +10,13 @@
     "static/media/chatLogo.svg": "/react-js-social-network/static/media/chatLogo.60e1bb2d05b7b3881e7895f729c024ba.svg",
     "static/media/usersLogo.svg": "/react-js-social-network/static/media/usersLogo.151c872d679121150d54952849b31c5c.svg",
     "static/media/profileLogo.svg": "/react-js-social-network/static/media/profileLogo.62b6b7de6b8faf32e28c51ae3733bf80.svg",
-    "main.c5fa4e5a.css.map": "/react-js-social-network/static/css/main.c5fa4e5a.css.map",
-    "main.e599d16b.js.map": "/react-js-social-network/static/js/main.e599d16b.js.map",
+    "main.8d931415.css.map": "/react-js-social-network/static/css/main.8d931415.css.map",
+    "main.58681092.js.map": "/react-js-social-network/static/js/main.58681092.js.map",
     "271.2351c400.chunk.css.map": "/react-js-social-network/static/css/271.2351c400.chunk.css.map",
     "271.6477fb97.chunk.js.map": "/react-js-social-network/static/js/271.6477fb97.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c5fa4e5a.css",
-    "static/js/main.e599d16b.js"
+    "static/css/main.8d931415.css",
+    "static/js/main.58681092.js"
   ]
 }
